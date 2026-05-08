@@ -1,0 +1,2153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inventory Archive — Athens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f5f1e8;
+    --paper-2: #efeae0;
+    --nav-height: 72px;
+    --ink: #1a1a1a;
+    --ink-soft: #4a4540;
+    --ink-faint: #908a80;
+    --rule: #d4cfc3;
+    --rule-soft: #e6e1d5;
+    --oxblood: #7a1e1e;
+    --oxblood-soft: #a64242;
+    --gold: #b8924a;
+    --gold-tint: rgba(184, 146, 74, 0.13);
+    --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    --sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    --mono: "IBM Plex Mono", "Courier New", monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "kern", "liga", "ss02";
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.025 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.55;
+    mix-blend-mode: multiply;
+    z-index: 0;
+  }
+  header, .brand-nav, main, .lightbox { position: relative; z-index: 1; }
+
+  ::selection { background: var(--oxblood); color: var(--paper); }
+
+  /* ===== Masthead ===== */
+  .masthead {
+    border-bottom: 1px solid var(--ink);
+    padding: 60px 64px 32px;
+    position: relative;
+    overflow: hidden;
+    max-width: 1480px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "eyebrow portrait"
+      "title   portrait"
+      "deck    portrait"
+      "colophon colophon";
+    column-gap: 48px;
+    row-gap: 0;
+    align-items: start;
+  }
+  .masthead .eyebrow { grid-area: eyebrow; }
+  .masthead h1 { grid-area: title; }
+  .masthead .deck { grid-area: deck; }
+  .masthead .colophon { grid-area: colophon; }
+  .masthead .portrait {
+    grid-area: portrait;
+    align-self: start;
+    justify-self: end;
+    width: 220px;
+    max-width: 26vw;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border: 1px solid var(--ink);
+    background: var(--paper-2);
+    position: relative;
+    transform: rotate(0.5deg);
+    box-shadow:
+      0 1px 0 rgba(0,0,0,0.06),
+      6px 6px 0 0 var(--paper-2),
+      6px 6px 0 1px var(--rule);
+    transition: transform 0.3s ease;
+  }
+  .masthead .portrait:hover {
+    transform: rotate(0deg);
+  }
+  .masthead .portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  /* Fallback when image is missing/broken */
+  .masthead .portrait::after {
+    content: "✦ Plate";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 26px;
+    color: var(--ink-faint);
+    background: var(--paper-2);
+    z-index: 0;
+  }
+  .masthead .portrait img {
+    position: relative;
+    z-index: 1;
+  }
+  .masthead .portrait .caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.55), transparent);
+    color: var(--paper);
+    font-family: var(--mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.24em;
+    padding: 22px 12px 8px;
+    text-align: right;
+    pointer-events: none;
+  }
+  .masthead::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 120px;
+    height: 1px;
+    background: var(--oxblood);
+  }
+  .masthead .eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    color: var(--oxblood);
+    margin-bottom: 18px;
+    font-weight: 500;
+  }
+  .masthead .eyebrow::before {
+    content: "";
+    display: inline-block;
+    width: 28px;
+    height: 1px;
+    background: var(--oxblood);
+    vertical-align: middle;
+    margin-right: 12px;
+    transform: translateY(-1px);
+  }
+  .masthead h1 {
+    font-family: var(--serif);
+    font-size: clamp(48px, 7vw, 84px);
+    line-height: 0.94;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+  }
+  .masthead h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--oxblood);
+    display: inline-block;
+  }
+  .masthead .deck {
+    margin-top: 22px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 21px;
+    color: var(--ink-soft);
+    max-width: 620px;
+    line-height: 1.5;
+  }
+  .masthead .colophon {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    gap: 36px;
+    align-items: baseline;
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--ink-faint);
+  }
+  .masthead .colophon span {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .masthead .colophon strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .masthead .colophon .rule { display: none; }
+
+  /* ===== Brand Nav ===== */
+  .brand-nav {
+    display: flex;
+    align-items: stretch;
+    border-bottom: 1px solid var(--rule);
+    padding: 0 64px;
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: var(--paper);
+    max-width: 1480px;
+    margin: 0 auto;
+  }
+  .brand-nav::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 16px;
+    background: linear-gradient(to bottom, var(--paper), transparent);
+    pointer-events: none;
+  }
+  .brand-nav .tabs {
+    display: flex;
+    align-items: stretch;
+    flex: 1;
+  }
+  .nav-label {
+    display: flex;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.24em;
+    color: var(--ink-faint);
+    padding-right: 36px;
+    border-right: 1px solid var(--rule);
+    margin-right: 36px;
+    font-weight: 500;
+  }
+  .tab {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 26px;
+    font-weight: 400;
+    padding: 22px 28px 20px;
+    cursor: pointer;
+    color: var(--ink-faint);
+    position: relative;
+    transition: color 0.25s ease;
+    user-select: none;
+  }
+  .tab:hover { color: var(--ink-soft); }
+  .tab.active { color: var(--ink); font-weight: 500; }
+  .tab.active::after {
+    content: "";
+    position: absolute;
+    left: 28px;
+    right: 28px;
+    bottom: -1px;
+    height: 2px;
+    background: var(--oxblood);
+    animation: drawIn 0.35s ease forwards;
+  }
+  @keyframes drawIn {
+    from { transform: scaleX(0); transform-origin: left; }
+    to { transform: scaleX(1); transform-origin: left; }
+  }
+
+  /* ===== Main ===== */
+  main {
+    max-width: 1480px;
+    margin: 0 auto;
+    padding: 48px 64px 100px;
+    animation: fadeUp 0.5s ease;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== Errata Banner ===== */
+  .review-banner {
+    display: none;
+    align-items: center;
+    gap: 18px;
+    padding: 18px 24px;
+    border-top: 1px solid var(--oxblood);
+    border-bottom: 1px solid var(--oxblood);
+    margin-bottom: 48px;
+    cursor: pointer;
+    font-family: var(--mono);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--oxblood);
+    transition: all 0.2s;
+    background: transparent;
+  }
+  .review-banner.show { display: flex; }
+  .review-banner:hover {
+    background: var(--oxblood);
+    color: var(--paper);
+  }
+  .review-banner::before {
+    content: "✦";
+    font-size: 14px;
+    transform: translateY(-1px);
+  }
+  .review-banner .arrow { margin-left: auto; font-size: 14px; }
+
+  /* ===== Stats Strip ===== */
+  .stats-card {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 64px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
+  }
+  .stat {
+    padding: 26px 28px 24px;
+    border-right: 1px solid var(--rule);
+    position: relative;
+  }
+  .stat:last-child { border-right: none; }
+  .stat .label {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--ink-faint);
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+  .stat .value {
+    font-family: var(--serif);
+    font-size: 46px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+  .stat.text .value {
+    font-size: 21px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.35;
+    letter-spacing: 0;
+  }
+  .stat.text .value .price-tag {
+    display: block;
+    font-family: var(--mono);
+    font-style: normal;
+    font-size: 13px;
+    color: var(--oxblood);
+    letter-spacing: 0.08em;
+    margin-top: 6px;
+  }
+
+  /* ===== Filters ===== */
+  .controls {
+    margin-bottom: 36px;
+  }
+  .search-row {
+    display: flex;
+    align-items: baseline;
+    gap: 24px;
+    border-bottom: 1px solid var(--ink);
+    padding: 4px 0 8px;
+    margin-bottom: 26px;
+  }
+  .search-row .search-prefix {
+    font-family: var(--mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--ink-faint);
+    padding-bottom: 6px;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+  #search {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--ink);
+    padding: 6px 0;
+    width: 100%;
+  }
+  #search::placeholder {
+    color: var(--ink-faint);
+    font-style: italic;
+  }
+  .clear {
+    border: none;
+    background: transparent;
+    font-family: var(--mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-faint);
+    cursor: pointer;
+    padding: 4px 0;
+    transition: color 0.15s;
+  }
+  .clear:hover { color: var(--oxblood); }
+
+  .size-chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+  }
+  .size-chips > .label {
+    font-family: var(--mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--ink-faint);
+    margin-right: 18px;
+    font-weight: 500;
+  }
+  .chip {
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    padding: 8px 16px;
+    border: 1px solid var(--rule);
+    background: transparent;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.15s;
+    user-select: none;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  .chip:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+  .chip.active {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+  .chip.clear-chip {
+    border-style: dashed;
+    color: var(--oxblood);
+    border-color: var(--oxblood-soft);
+  }
+  .chip.clear-chip:hover {
+    background: var(--oxblood);
+    color: var(--paper);
+    border-color: var(--oxblood);
+  }
+
+  .view-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--rule);
+  }
+  .view-row > .label {
+    font-family: var(--mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--ink-faint);
+    margin-right: 18px;
+    font-weight: 500;
+  }
+  .toggle-chip {
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    padding: 8px 18px 8px 14px;
+    border: 1px solid var(--rule);
+    background: transparent;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.15s;
+    user-select: none;
+    color: var(--ink-soft);
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .toggle-chip:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+  .toggle-chip.active {
+    background: var(--oxblood);
+    color: var(--paper);
+    border-color: var(--oxblood);
+  }
+  .toggle-chip .indicator {
+    width: 10px;
+    height: 10px;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    transition: all 0.18s;
+  }
+  .toggle-chip.active .indicator {
+    background: var(--paper);
+    border-color: var(--paper);
+  }
+  .toggle-chip.action {
+    background: transparent;
+    border-color: var(--ink);
+    color: var(--ink);
+    gap: 8px;
+  }
+  .toggle-chip.action:hover {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+  .toggle-chip.action[disabled] {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .toggle-chip.action[disabled]:hover {
+    background: transparent;
+    color: var(--ink);
+    border-color: var(--ink);
+  }
+  .toggle-chip.danger {
+    border-color: var(--oxblood-soft);
+    color: var(--oxblood);
+  }
+  .toggle-chip.danger:hover {
+    background: var(--oxblood);
+    color: var(--paper);
+    border-color: var(--oxblood);
+  }
+  .toggle-chip .count-badge {
+    background: var(--oxblood);
+    color: var(--paper);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  .toggle-chip.active .count-badge {
+    background: var(--paper);
+    color: var(--oxblood);
+  }
+
+  /* ===== Edit Mode ===== */
+  body.edit-mode td.size {
+    cursor: pointer;
+  }
+  body.edit-mode td.size:hover {
+    background: rgba(122, 30, 30, 0.08) !important;
+  }
+  body.edit-mode td.size:hover::after {
+    content: "✎";
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    font-size: 10px;
+    color: var(--oxblood);
+    opacity: 0.6;
+  }
+  td.size.modified {
+    position: relative;
+  }
+  td.size.modified::before {
+    content: "";
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 5px;
+    height: 5px;
+    background: var(--oxblood);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 2;
+  }
+  td.size.modified .num {
+    color: var(--oxblood) !important;
+    font-weight: 600 !important;
+  }
+  tr.row.has-edits {
+    background: rgba(122, 30, 30, 0.04);
+  }
+  tr.row.has-edits:hover { background: rgba(122, 30, 30, 0.08); }
+  tr.row.has-edits td.style::before {
+    content: "✎";
+    position: absolute;
+    left: 4px;
+    color: var(--oxblood);
+    font-size: 11px;
+    line-height: 1;
+    margin-top: 4px;
+  }
+  tr.row.has-edits td.style {
+    position: relative;
+    padding-left: 20px;
+  }
+  td.size .qty-input {
+    width: 100%;
+    border: 1px solid var(--oxblood);
+    background: var(--paper);
+    font-family: var(--mono);
+    font-size: 14px;
+    text-align: center;
+    padding: 6px 4px;
+    outline: none;
+    border-radius: 14px;
+    color: var(--oxblood);
+    font-weight: 700;
+    -moz-appearance: textfield;
+  }
+  td.size .qty-input::-webkit-outer-spin-button,
+  td.size .qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  td.size .qty-input:focus {
+    box-shadow: 0 0 0 2px rgba(122, 30, 30, 0.2);
+  }
+
+  .edits-summary {
+    display: none;
+    margin-top: 16px;
+    padding: 14px 18px;
+    background: rgba(122, 30, 30, 0.05);
+    border-left: 3px solid var(--oxblood);
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+  }
+  .edits-summary.show { display: block; }
+  .edits-summary strong {
+    color: var(--oxblood);
+    font-weight: 600;
+  }
+  .edits-summary .helper {
+    display: block;
+    font-style: italic;
+    font-family: var(--serif);
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-top: 6px;
+  }
+
+  /* ===== Index Header ===== */
+  .index-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 18px;
+    border-top: 1px solid var(--ink);
+    padding-top: 16px;
+  }
+  .index-header h2 {
+    font-family: var(--serif);
+    font-size: 36px;
+    font-style: italic;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+  }
+  .index-header h2 .num {
+    font-family: var(--mono);
+    font-style: normal;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-faint);
+    margin-left: 14px;
+    vertical-align: middle;
+    font-weight: 500;
+  }
+  .index-header .meta {
+    font-family: var(--mono);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-faint);
+  }
+
+  /* ===== Matrix Table ===== */
+  .matrix { margin-bottom: 56px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+  }
+  thead tr { border-bottom: 1px solid var(--ink); }
+  th {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--ink-faint);
+    padding: 16px 10px;
+    text-align: left;
+    font-weight: 500;
+    white-space: nowrap;
+    position: sticky;
+    top: var(--nav-height);
+    z-index: 15;
+    background: var(--paper);
+    box-shadow: inset 0 -1px 0 var(--ink), 0 1px 6px rgba(0,0,0,0.04);
+  }
+  th.center, th.size { text-align: center; }
+  th.right { text-align: right; padding-right: 14px; }
+
+  tbody tr.row {
+    border-bottom: 1px solid var(--rule-soft);
+    cursor: pointer;
+    transition: background 0.18s;
+  }
+  tbody tr.row:hover { background: rgba(122, 30, 30, 0.035); }
+  tbody tr.row.expanded {
+    background: rgba(122, 30, 30, 0.06);
+    border-bottom-color: transparent;
+  }
+
+  td {
+    padding: 20px 10px;
+    vertical-align: baseline;
+  }
+  td.style {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  td.sku {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  td.sku.empty { color: var(--rule); font-style: normal; }
+
+  /* Grouped mode: style header row */
+  tr.style-group {
+    border-bottom: 1px solid var(--ink);
+    cursor: pointer;
+    transition: background 0.18s;
+    background: rgba(122, 30, 30, 0.03);
+  }
+  tr.style-group:hover { background: rgba(122, 30, 30, 0.07); }
+  tr.style-group td {
+    padding: 22px 10px;
+  }
+  tr.style-group td.style {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    position: relative;
+    padding-left: 28px;
+  }
+  tr.style-group td.style::before {
+    content: "▸";
+    position: absolute;
+    left: 8px;
+    color: var(--oxblood);
+    font-size: 11px;
+    transition: transform 0.2s;
+    transform-origin: center;
+    top: 50%;
+    transform: translateY(-50%);
+    line-height: 1;
+  }
+  tr.style-group.expanded td.style::before {
+    content: "▾";
+    color: var(--oxblood);
+  }
+  tr.style-group td.summary-colors {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--ink-soft);
+  }
+  tr.style-group td.summary-colors .badge {
+    font-family: var(--mono);
+    font-style: normal;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--oxblood);
+    border: 1px solid var(--oxblood-soft);
+    padding: 2px 8px;
+    margin-left: 10px;
+    vertical-align: middle;
+    font-weight: 500;
+  }
+  tr.style-group td.size {
+    color: var(--ink-soft);
+  }
+  tr.style-group td.size.has-qty { color: var(--ink); font-weight: 600; }
+
+  /* Sub-rows under expanded group */
+  tr.row.sub {
+    border-bottom: 1px solid var(--rule-soft);
+    background: rgba(0, 0, 0, 0.015);
+  }
+  tr.row.sub td.style {
+    color: var(--rule);
+    padding-left: 28px;
+    position: relative;
+  }
+  tr.row.sub td.style::before {
+    content: "└";
+    position: absolute;
+    left: 12px;
+    color: var(--oxblood-soft);
+    font-size: 14px;
+  }
+  td.color {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-style: italic;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+  td.desc {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--ink-faint);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+  td.price {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-feature-settings: "tnum";
+    text-align: right;
+    padding-right: 14px;
+    color: var(--ink-soft);
+  }
+  td.size, th.size {
+    text-align: center;
+    border-left: 1px solid var(--rule-soft);
+    background: rgba(26, 26, 26, 0.022);
+    min-width: 58px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+  th.size {
+    background: #ebe6db;
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    box-shadow: inset 0 -1px 0 var(--ink), 0 1px 6px rgba(0,0,0,0.04);
+  }
+  td.size {
+    font-family: var(--mono);
+    font-size: 15px;
+    font-feature-settings: "tnum";
+    color: var(--rule);
+    font-weight: 400;
+    position: relative;
+  }
+  td.size-first, th.size-first { border-left: 1px solid var(--ink-faint); }
+  td.size-last, th.size-last { border-right: 1px solid var(--ink-faint); }
+
+  td.size .num {
+    display: inline-block;
+    min-width: 26px;
+    line-height: 1.2;
+  }
+  td.size.zero .num {
+    color: rgba(0, 0, 0, 0.16);
+    font-weight: 300;
+    font-size: 13px;
+  }
+  td.size.qty-1 .num {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  td.size.qty-multi .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 30px;
+    height: 30px;
+    padding: 0 10px;
+    background: var(--gold-tint);
+    color: var(--oxblood);
+    font-weight: 700;
+    border: 1px solid rgba(184, 146, 74, 0.4);
+    border-radius: 16px;
+    line-height: 1;
+    font-size: 14px;
+  }
+
+  /* Hover state: highlight current size column on row hover */
+  tbody tr.row:hover td.size { background: rgba(26, 26, 26, 0.04); }
+  tbody tr.style-group:hover td.size { background: rgba(122, 30, 30, 0.06); }
+  tbody tr.row.expanded td.size { background: rgba(122, 30, 30, 0.04); }
+
+  /* Slightly stronger size cells for the grouped header row */
+  tr.style-group td.size { background: rgba(26, 26, 26, 0.045); }
+  tr.style-group td.size.qty-multi .num { font-size: 14px; min-width: 32px; height: 30px; }
+  td.total {
+    font-family: var(--mono);
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    color: var(--ink);
+    font-feature-settings: "tnum";
+    letter-spacing: 0.02em;
+  }
+  td.action { text-align: center; }
+  .photo-btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    background: transparent;
+    border: 1px solid var(--ink);
+    padding: 8px 14px;
+    cursor: pointer;
+    transition: all 0.18s;
+    color: var(--ink);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .photo-btn:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .photo-btn.expanded {
+    background: var(--oxblood);
+    color: var(--paper);
+    border-color: var(--oxblood);
+  }
+
+  /* ===== Photo Row ===== */
+  tr.photo-row {
+    background: rgba(122, 30, 30, 0.04);
+    border-bottom: 1px solid var(--ink);
+  }
+  tr.photo-row td {
+    padding: 32px 32px 40px;
+  }
+  .photos-header {
+    font-family: var(--mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--ink-faint);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--rule);
+    display: flex;
+    justify-content: space-between;
+  }
+  .photos-header .label-strong { color: var(--ink); font-weight: 500; }
+  .photos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 28px;
+  }
+  .photo-card {
+    cursor: pointer;
+    transition: transform 0.25s ease;
+    animation: rise 0.45s ease both;
+    animation-delay: calc(var(--i) * 35ms);
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .photo-card:hover { transform: translateY(-3px); }
+  .photo-card .frame {
+    position: relative;
+    border: 1px solid var(--ink);
+    background: var(--paper-2);
+    padding: 7px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .photo-card .frame::after {
+    content: "";
+    position: absolute;
+    inset: 7px;
+    border: 1px solid rgba(0,0,0,0.06);
+    pointer-events: none;
+  }
+  .photo-card .frame::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-top: 12px solid transparent;
+    border-left: 12px solid var(--oxblood);
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 2;
+  }
+  .photo-card:hover .frame::before { opacity: 1; }
+  .photo-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    filter: contrast(0.96) saturate(0.92);
+    transition: filter 0.3s;
+  }
+  .photo-card:hover img { filter: contrast(1) saturate(1); }
+  .photo-card .caption {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    line-height: 1.7;
+    color: var(--ink-soft);
+  }
+  .photo-card .caption .size-badge {
+    display: inline-block;
+    border: 1px solid var(--ink);
+    padding: 2px 8px;
+    margin-right: 8px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-size: 11px;
+  }
+  .photo-card .caption .filename {
+    display: block;
+    margin-top: 4px;
+    color: var(--ink-faint);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+  .photo-card .caption .sku-line {
+    display: block;
+    color: var(--ink-soft);
+    font-size: 12px;
+  }
+
+  /* ===== Empty State ===== */
+  .empty-state {
+    padding: 90px 0;
+    text-align: center;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 24px;
+    color: var(--ink-faint);
+  }
+  .empty-state::before {
+    content: "—";
+    display: block;
+    color: var(--oxblood-soft);
+    margin-bottom: 14px;
+    font-style: normal;
+    letter-spacing: 0.4em;
+  }
+
+  /* ===== Errata Section ===== */
+  .review-section {
+    display: none;
+    margin-top: 72px;
+    border-top: 1px solid var(--ink);
+    padding-top: 32px;
+    scroll-margin-top: 80px;
+  }
+  .review-section.show { display: block; }
+  .review-section .section-eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    color: var(--oxblood);
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+  .review-section h3 {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 40px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+  .review-section .subtitle {
+    font-family: var(--serif);
+    font-size: 19px;
+    font-style: italic;
+    color: var(--ink-soft);
+    margin-bottom: 36px;
+    max-width: 620px;
+    line-height: 1.5;
+  }
+  .review-list { display: flex; flex-direction: column; }
+  .review-item {
+    display: grid;
+    grid-template-columns: 56px 220px 1fr auto;
+    gap: 28px;
+    align-items: baseline;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .review-item:first-child { border-top: 1px dashed var(--rule); }
+  .review-item .num {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 34px;
+    font-weight: 500;
+    color: var(--oxblood);
+    line-height: 1;
+  }
+  .review-item .filename {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+  }
+  .review-item .filename .folder {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-faint);
+    font-weight: 400;
+    margin-top: 4px;
+  }
+  .review-item .reason {
+    font-family: var(--serif);
+    font-size: 21px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--ink-soft);
+  }
+  .review-item .view-btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    background: transparent;
+    border: 1px solid var(--oxblood);
+    color: var(--oxblood);
+    padding: 9px 18px;
+    cursor: pointer;
+    transition: all 0.18s;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+  .review-item .view-btn:hover {
+    background: var(--oxblood);
+    color: var(--paper);
+  }
+
+  /* ===== Lightbox ===== */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 18, 14, 0.97);
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+  .lightbox.open {
+    display: flex;
+    animation: fadeIn 0.25s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .lightbox img {
+    max-width: 88vw;
+    max-height: 80vh;
+    display: block;
+    border: 1px solid rgba(245, 241, 232, 0.15);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  }
+  .lightbox .caption {
+    position: absolute;
+    bottom: 36px;
+    left: 36px;
+    color: var(--paper);
+    max-width: 640px;
+  }
+  .lightbox .caption::before {
+    content: "";
+    display: block;
+    width: 44px;
+    height: 1px;
+    background: var(--oxblood-soft);
+    margin-bottom: 14px;
+  }
+  .lightbox .caption .filename {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 28px;
+    margin-bottom: 8px;
+    font-weight: 400;
+  }
+  .lightbox .caption .meta {
+    font-family: var(--mono);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: rgba(245, 241, 232, 0.7);
+    line-height: 1.6;
+  }
+  .lightbox .counter {
+    position: absolute;
+    top: 32px;
+    left: 36px;
+    font-family: var(--mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: rgba(245, 241, 232, 0.6);
+    border: 1px solid rgba(245, 241, 232, 0.2);
+    padding: 7px 14px;
+  }
+  .lightbox button {
+    position: absolute;
+    background: transparent;
+    border: 1px solid rgba(245, 241, 232, 0.25);
+    color: var(--paper);
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    font-family: var(--serif);
+    font-size: 26px;
+    transition: all 0.18s;
+    line-height: 1;
+  }
+  .lightbox button:hover {
+    background: rgba(245, 241, 232, 0.08);
+    border-color: rgba(245, 241, 232, 0.55);
+  }
+  .lightbox .close { top: 28px; right: 28px; font-size: 18px; }
+  .lightbox .prev { left: 28px; top: 50%; transform: translateY(-50%); }
+  .lightbox .next { right: 28px; top: 50%; transform: translateY(-50%); }
+
+  /* ===== Footer ===== */
+  footer {
+    border-top: 1px solid var(--rule);
+    margin-top: 60px;
+    padding: 30px 64px 38px;
+    max-width: 1480px;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: var(--mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-faint);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  footer .colophon-name {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 18px;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--ink-soft);
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 1100px) {
+    .stats-card { grid-template-columns: repeat(3, 1fr); }
+    .stat:nth-child(3) { border-right: none; }
+    .stat:nth-child(n+4) { border-top: 1px solid var(--rule); }
+  }
+  @media (max-width: 760px) {
+    .masthead {
+      padding: 28px 20px 22px;
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        "eyebrow  portrait"
+        "title    portrait"
+        "deck     deck"
+        "colophon colophon";
+      column-gap: 16px;
+    }
+    .masthead h1 { font-size: 38px; }
+    .masthead h1 em { font-size: 32px; }
+    .masthead .deck { font-size: 16px; margin-top: 14px; }
+    .masthead .portrait { width: 110px; }
+    .masthead .colophon {
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+    }
+    .masthead .colophon span { gap: 6px; }
+    .brand-nav { padding: 0 20px; overflow-x: auto; }
+    .nav-label { display: none; }
+    .tab { font-size: 18px; padding: 14px 14px 12px; }
+    main { padding: 24px 20px 56px; }
+    .stats-card { grid-template-columns: repeat(2, 1fr); }
+    .stat { padding: 18px 16px; }
+    .stat:nth-child(2n) { border-right: none; }
+    .stat:nth-child(n+3) { border-top: 1px solid var(--rule); }
+    .stat .value { font-size: 30px; }
+    .stat.text .value { font-size: 16px; }
+    .review-item { grid-template-columns: 36px 1fr; gap: 12px; }
+    .review-item .num { font-size: 22px; }
+    .review-item .filename { grid-column: 2; }
+    .review-item .reason { grid-column: 1 / -1; padding-left: 48px; font-size: 17px; }
+    .review-item .view-btn { grid-column: 1 / -1; justify-self: start; margin-left: 48px; }
+    .review-section h3 { font-size: 28px; }
+    .lightbox .caption { left: 16px; bottom: 20px; right: 16px; max-width: none; }
+    .lightbox .caption .filename { font-size: 20px; }
+    .lightbox .counter { top: 16px; left: 16px; font-size: 10px; }
+    .lightbox button { width: 40px; height: 40px; }
+    .lightbox .close { top: 16px; right: 16px; }
+    .lightbox .prev { left: 12px; }
+    .lightbox .next { right: 12px; }
+    footer { padding: 22px 20px; flex-direction: column; gap: 8px; align-items: flex-start; }
+    /* Make table horizontally scrollable on mobile */
+    .matrix { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-left: -20px; margin-right: -20px; padding: 0 20px; }
+    table { font-size: 12px; min-width: 900px; }
+    th, td { padding: 12px 6px; }
+    th { font-size: 10px; padding: 12px 6px; }
+    td.color { font-size: 16px; }
+    td.size { font-size: 13px; min-width: 44px; }
+    td.size .num { min-width: 22px; }
+    td.size.qty-multi .num { min-width: 26px; height: 26px; font-size: 12px; padding: 0 8px; }
+    td.sku { font-size: 11px; }
+    td.style { font-size: 12px; }
+    td.total { font-size: 14px; }
+    .photo-btn { font-size: 9px; padding: 6px 10px; letter-spacing: 0.14em; }
+    tr.style-group td { padding: 16px 6px; }
+    tr.style-group td.style { font-size: 13px; padding-left: 22px; }
+    tr.style-group td.style::before { left: 4px; }
+    tr.style-group td.summary-colors { font-size: 14px; }
+    tr.style-group td.summary-colors .badge { font-size: 9px; padding: 1px 6px; margin-left: 6px; }
+    tr.photo-row td { padding: 20px 12px 24px; }
+    .photos { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px; }
+    .photo-card img { height: 150px; }
+    .photos-header { font-size: 10px; flex-wrap: wrap; gap: 4px; }
+    /* Search row stays usable */
+    .search-row { flex-wrap: wrap; gap: 10px; }
+    #search { font-size: 19px; min-width: 0; }
+    .search-row .search-prefix { font-size: 11px; }
+    .index-header { flex-wrap: wrap; gap: 8px; }
+    .index-header h2 { font-size: 26px; }
+    .index-header h2 .num { font-size: 11px; margin-left: 8px; }
+    .review-banner { font-size: 11px; padding: 14px 16px; gap: 10px; flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="eyebrow">Athens · Inventory Verification Console</div>
+  <h1>Inventory<br><em>Archive.</em></h1>
+  <div class="deck">A visual register of every item counted in the boutique. Each row indexes a style and color; each photograph confirms a tag.</div>
+  <figure class="portrait">
+    <img src="shaq.gif" alt="">
+    <figcaption class="caption">Plate I</figcaption>
+  </figure>
+  <div class="colophon">
+    <span><strong>Edition</strong> 2026-05-08</span>
+    <span><strong>Folio</strong> I — III</span>
+    <span><strong>Houses</strong> MD75 · Isaac Sellam · Aito</span>
+  </div>
+</header>
+
+<nav class="brand-nav">
+  <div class="nav-label">House —</div>
+  <div class="tabs" id="tabs"></div>
+</nav>
+
+<main>
+  <div id="review-banner" class="review-banner" onclick="scrollToReview()">
+    <span id="review-banner-text"></span>
+    <span class="arrow">→</span>
+  </div>
+
+  <div class="stats-card" id="stats"></div>
+
+  <div class="controls">
+    <div class="search-row">
+      <span class="search-prefix">Search —</span>
+      <input type="text" id="search" placeholder="style, color, SKU, or description...">
+      <button class="clear" onclick="clearSearch()">Clear</button>
+    </div>
+    <div class="size-chips" id="size-chips">
+      <span class="label">Size —</span>
+    </div>
+    <div class="view-row">
+      <span class="label">View —</span>
+      <button class="toggle-chip" id="group-toggle" onclick="toggleGrouped()">
+        <span class="indicator"></span>
+        Group by Style
+      </button>
+      <button class="toggle-chip" id="edit-toggle" onclick="toggleEditMode()">
+        <span class="indicator"></span>
+        Edit Mode
+      </button>
+      <button class="toggle-chip action" id="download-btn" onclick="downloadUpdates()" disabled>
+        ↓ Download Updates
+        <span class="count-badge" id="updates-count">0</span>
+      </button>
+      <button class="toggle-chip danger" id="reset-btn" onclick="resetUpdates()" style="display:none;">
+        ✕ Reset
+      </button>
+    </div>
+    <div class="edits-summary" id="edits-summary">
+      <strong id="edits-summary-text">0 cells modified</strong>
+      <span class="helper">Your edits are saved automatically in this browser. Click <em>Download Updates</em> to send the changes to Gal in WhatsApp.</span>
+    </div>
+  </div>
+
+  <div class="index-header">
+    <h2 id="index-title">Index <span class="num" id="index-num"></span></h2>
+    <div class="meta" id="index-meta"></div>
+  </div>
+
+  <div class="matrix">
+    <table>
+      <thead id="matrix-head"></thead>
+      <tbody id="matrix-body"></tbody>
+    </table>
+  </div>
+
+  <section id="review-section" class="review-section">
+    <div class="section-eyebrow">— Errata</div>
+    <h3>Items pending review</h3>
+    <p class="subtitle" id="review-subtitle"></p>
+    <ol id="review-list" class="review-list"></ol>
+  </section>
+</main>
+
+<footer>
+  <span>Athens Verification Console · No. 1</span>
+  <span class="colophon-name">— set in Cormorant Garamond &amp; IBM Plex —</span>
+  <span>Composed locally · Updated 2026-05-08</span>
+</footer>
+
+<div id="lightbox" class="lightbox">
+  <button class="close" onclick="closeLightbox()" title="Close (Esc)">✕</button>
+  <button class="prev" onclick="navLightbox(-1)" title="Previous (←)">‹</button>
+  <button class="next" onclick="navLightbox(1)" title="Next (→)">›</button>
+  <div class="counter" id="lightbox-counter"></div>
+  <img id="lightbox-img" src="" alt="">
+  <div class="caption">
+    <div class="filename" id="lightbox-filename"></div>
+    <div class="meta" id="lightbox-meta"></div>
+  </div>
+</div>
+
+<script>
+const DATA = {"brands": {"MD75": {"stockMatrix": [{"styleCode": "MD10257", "color": "RED", "description": "Tshirt 100% cotton", "price": 151.0, "sizes": {"L": 1, "XXXL": 1}, "total": 2, "photos": [{"path": "md75/with%20barcode/IMG_6525.jpg", "filename": "IMG_6525.jpg", "size": "L", "sku": "MD10257REDL"}, {"path": "md75/with%20barcode/IMG_6577.jpg", "filename": "IMG_6577.jpg", "size": "XXXL", "sku": "MD10257REDXXXL"}], "skuBase": "MD10257RED"}, {"styleCode": "MD10261", "color": "RED", "description": "Tshirt 100% cotton", "price": 157.0, "sizes": {"XXXL": 1}, "total": 1, "photos": [{"path": "md75/with%20barcode/IMG_6572.jpg", "filename": "IMG_6572.jpg", "size": "XXXL", "sku": "MD10261REDXXXL"}], "skuBase": "MD10261RED"}, {"styleCode": "MD10263", "color": "Dust Resin", "description": "(no-barcode tag)", "price": null, "sizes": {"XXL": 1}, "total": 1, "photos": [{"path": "md75/no%20barcode/IMG_6569.jpg", "filename": "IMG_6569.jpg", "size": "XXL", "sku": ""}], "skuBase": ""}, {"styleCode": "MD10263", "color": "RED", "description": "Tshirt 100% cotton", "price": 196.0, "sizes": {"XL": 1}, "total": 1, "photos": [{"path": "md75/with%20barcode/IMG_6558.jpg", "filename": "IMG_6558.jpg", "size": "XL", "sku": "MD10263REDXL"}], "skuBase": "MD10263RED"}, {"styleCode": "MD10263", "color": "WHITE", "description": "Tshirt 100% cotton", "price": 196.0, "sizes": {"XXXL": 1}, "total": 1, "photos": [{"path": "md75/with%20barcode/IMG_6571.jpg", "filename": "IMG_6571.jpg", "size": "XXXL", "sku": "MD10263WHXXXL"}], "skuBase": "MD10263WH"}, {"styleCode": "MD10277", "color": "RED", "description": "Tshirt 100% cotton", "price": 246.0, "sizes": {"L": 1, "XL": 1, "XXL": 1}, "total": 3, "photos": [{"path": "md75/with%20barcode/IMG_6524.jpg", "filename": "IMG_6524.jpg", "size": "L", "sku": "MD10277REDL"}, {"path": "md75/with%20barcode/IMG_6557.jpg", "filename": "IMG_6557.jpg", "size": "XL", "sku": "MD10277REDXL"}, {"path": "md75/with%20barcode/IMG_6560.jpg", "filename": "IMG_6560.jpg", "size": "XXL", "sku": "MD10277REDXXL"}], "skuBase": "MD10277RED"}, {"styleCode": "MD11118", "color": "BLACK", "description": "KNIT", "price": 290.0, "sizes": {"XXL": 1}, "total": 1, "photos": [{"path": "md75/with%20barcode/IMG_6562.jpg", "filename": "IMG_6562.jpg", "size": "XXL", "sku": "MD11118BLACKXXL"}], "skuBase": "MD11118BLACK"}, {"styleCode": "MD11172", "color": "Dust Resin", "description": "(no-barcode tag)", "price": null, "sizes": {"XXL": 1}, "total": 1, "photos": [{"path": "md75/no%20barcode/IMG_6568.jpg", "filename": "IMG_6568.jpg", "size": "XXL", "sku": ""}], "skuBase": ""}, {"styleCode": "MD11178", "color": "BLACK", "description": "Tshirt 100% cotton", "price": 319.0, "sizes": {"XXXL": 1}, "total": 1, "photos": [{"path": "md75/with%20barcode/IMG_6576.jpg", "filename": "IMG_6576.jpg", "size": "XXXL", "sku": "MD11178BLACKXXXL"}], "skuBase": "MD11178BLACK"}, {"styleCode": "MD11186", "color": "BLACK", "description": "PANTS", "price": 420.0, "sizes": {"L": 1}, "total": 1, "photos": [{"path": "md75/with%20barcode/IMG_6629.jpg", "filename": "IMG_6629.jpg", "size": "L", "sku": "MD11186BLACKL"}], "skuBase": "MD11186BLACK"}, {"styleCode": "MD11186", "color": "BLACK BASIC", "description": "PANTS", "price": 420.0, "sizes": {"M": 1}, "total": 1, "photos": [{"path": "md75/with%20barcode/IMG_6626.jpg", "filename": "IMG_6626.jpg", "size": "M", "sku": "MD11186BLBM"}], "skuBase": "MD11186BLB"}, {"styleCode": "MD11186", "color": "Black Spray", "description": "(no-barcode tag)", "price": null, "sizes": {"M": 1}, "total": 1, "photos": [{"path": "md75/no%20barcode/IMG_6627.jpg", "filename": "IMG_6627.jpg", "size": "M", "sku": ""}], "skuBase": ""}, {"styleCode": "MD12105", "color": "ANTRABLK", "description": "MD75 LONGSLEEVE", "price": 309.0, "sizes": {"S": 1, "M": 1, "L": 1}, "total": 3, "photos": [{"path": "md75/with%20barcode/IMG_6596.jpg", "filename": "IMG_6596.jpg", "size": "S", "sku": "MD12105ANTRABLKS"}, {"path": "md75/with%20barcode/IMG_6610.jpg", "filename": "IMG_6610.jpg", "size": "M", "sku": "MD12105ANTRABLKM"}, {"path": "md75/with%20barcode/IMG_6715.jpg", "filename": "IMG_6715.jpg", "size": "L", "sku": "MD12105ANTRABLKL"}], "skuBase": "MD12105ANTRABLK"}, {"styleCode": "MD12107", "color": "BROW BLK", "description": "MD75 LONGSLEEVE", "price": 390.0, "sizes": {"XXL": 1}, "total": 1, "photos": [{"path": "md75/with%20barcode/IMG_6657.jpg", "filename": "IMG_6657.jpg", "size": "XXL", "sku": "MD12107BROWBLKXXL"}], "skuBase": "MD12107BROWBLK"}, {"styleCode": "MD12111", "color": "BLACK LAM", "description": "MD75 LONGSLEEVE", "price": 360.0, "sizes": {"S": 1, "XXL": 1, "XL": 1}, "total": 3, "photos": [{"path": "md75/with%20barcode/IMG_6583.jpg", "filename": "IMG_6583.jpg", "size": "S", "sku": "MD12111BLACKS"}, {"path": "md75/with%20barcode/IMG_6661.jpg", "filename": "IMG_6661.jpg", "size": "XXL", "sku": "MD12111BLACKXXL"}, {"path": "md75/with%20barcode/IMG_6679.jpg", "filename": "IMG_6679.jpg", "size": "XL", "sku": "MD12111BLACKXL"}], "skuBase": "MD12111BLACK"}, {"styleCode": "MD12116", "color": "BLACK", "description": "MD75 LONGSLEEVE", "price": 321.0, "sizes": {"M": 1, "XL": 1, "L": 1}, "total": 3, "photos": [{"path": "md75/with%20barcode/IMG_6612.jpg", "filename": "IMG_6612.jpg", "size": "M", "sku": "MD12116BLACKM"}, {"path": "md75/with%20barcode/IMG_6668.jpg", "filename": "IMG_6668.jpg", "size": "XL", "sku": "MD12116BLACKXXL"}, {"path": "md75/with%20barcode/IMG_6710.jpg", "filename": "IMG_6710.jpg", "size": "L", "sku": "MD12116BLACKL"}], "skuBase": "MD12116BLACK"}, {"styleCode": "MD12117", "color": "BLUE CAM", "description": "MD75 LONGSLEEVE", "price": 318.0, "sizes": {"S": 1, "M": 1, "XL": 1}, "total": 3, "photos": [{"path": "md75/with%20barcode/IMG_6595.jpg", "filename": "IMG_6595.jpg", "size": "S", "sku": "MD12117BLUCMBLKS"}, {"path": "md75/with%20barcode/IMG_6609.jpg", "filename": "IMG_6609.jpg", "size": "M", "sku": "MD12117BLUCMBLKM"}, {"path": "md75/with%20barcode/IMG_6676.jpg", "filename": "IMG_6676.jpg", "size": "XL", "sku": "MD12117BLUCMBLKXL"}], "skuBase": "MD12117BLUCMBLK"}, {"styleCode": "MD12118", "color": "BLACK", "description": "MD75 LONGSLEEVE", "price": 321.0, "sizes": {"S": 1}, "total": 1, "photos": [{"path": "md75/with%20barcode/IMG_6594.jpg", "filename": "IMG_6594.jpg", "size": "S", "sku": "MD12118BLACKS"}], "skuBase": "MD12118BLACK"}, {"styleCode": "MD12119", "color": "WHITE", "description": "MD75 LONGSLEEVE", "price": 264.0, "sizes": {"S": 1, "M": 1, "XXL": 1}, "total": 3, "photos": [{"path": "md75/with%20barcode/IMG_6581.jpg", "filename": "IMG_6581.jpg", "size": "S", "sku": "MD12119WHS"}, {"path": "md75/with%20barcode/IMG_6604.jpg", "filename": "IMG_6604.jpg", "size": "M", "sku": "MD12119WHM"}, {"path": "md75/with%20barcode/IMG_6643.jpg", "filename": "IMG_6643.jpg", "size": "XXL", "sku": "MD12119WHXXL"}], "skuBase": "MD12119WH"}, {"styleCode": "MD12122", "color": "BLACK", "description": "MD75 PANTS", "price": 390.0, "sizes": {"XS": 1, "M": 1}, "total": 2, "photos": [{"path": "md75/with%20barcode/IMG_6620.jpg", "filename": "IMG_6620.jpg", "size": "XS", "sku": "MD12122BLACKXS"}, {"path": "md75/with%20barcode/IMG_6694.jpg", "filename": "IMG_6694.jpg", "size": "M", "sku": "MD12122BLACKM"}], "skuBase": "MD12122BLACK"}, {"styleCode": "MD12122", "color": "BLUE", "description": "MD75 PANTS", "price": 390.0, "sizes": {"XS": 1, "S": 1, "M": 1}, "total": 3, "photos": [{"path": "md75/with%20barcode/IMG_6619.jpg", "filename": "IMG_6619.jpg", "size": "XS", "sku": "MD12122BLUEXS"}, {"path": "md75/with%20barcode/IMG_6622.jpg", "filename": "IMG_6622.jpg", "size": "S", "sku": "MD12122BLUES"}, {"path": "md75/with%20barcode/IMG_6693.jpg", "filename": "IMG_6693.jpg", "size": "M", "sku": "MD12122BLUEM"}], "skuBase": "MD12122BLUE"}, {"styleCode": "MD12122", "color": "MILITARY BLK", "description": "MD75 PANTS", "price": 390.0, "sizes": {"S": 1, "M": 1}, "total": 2, "photos": [{"path": "md75/with%20barcode/IMG_6623.jpg", "filename": "IMG_6623.jpg", "size": "S", "sku": "MD12122MILITARY BLKS"}, {"path": "md75/with%20barcode/IMG_6690.jpg", "filename": "IMG_6690.jpg", "size": "M", "sku": "MD12122MILITARY BLKM"}], "skuBase": "MD12122MILITARY BLK"}, {"styleCode": "MD12122", "color": "Military Blk", "description": "(no-barcode tag)", "price": null, "sizes": {"L": 1}, "total": 1, "photos": [{"path": "md75/no%20barcode/IMG_6630.jpg", "filename": "IMG_6630.jpg", "size": "L", "sku": ""}], "skuBase": ""}, {"styleCode": "MD12123", "color": "WHITE", "description": "MD75 LONGSLEEVE", "price": 370.0, "sizes": {"M": 1, "XXL": 1, "L": 1}, "total": 3, "photos": [{"path": "md75/with%20barcode/IMG_6613.jpg", "filename": "IMG_6613.jpg", "size": "M", "sku": "MD12123WHM"}, {"path": "md75/with%20barcode/IMG_6650.jpg", "filename": "IMG_6650.jpg", "size": "XXL", "sku": "MD12123WHXXL"}, {"path": "md75/with%20barcode/IMG_6713.jpg", "filename": "IMG_6713.jpg", "size": "L", "sku": "MD12123WHL"}], "skuBase": "MD12123WH"}, {"styleCode": "MD12123", "color": "White Mold", "description": "(no-barcode tag)", "price": null, "sizes": {"S": 1}, "total": 1, "photos": [{"path": "md75/no%20barcode/IMG_6585.jpg", "filename": "IMG_6585.jpg", "size": "S", "sku": ""}], "skuBase": ""}, {"styleCode": "MD12124", "color": "BLACK", "description": "MD75 LONGSLEEVE", "price": 390.0, "sizes": {"XL": 1}, "total": 1, "photos": [{"path": "md75/with%20barcode/IMG_6669.jpg", "filename": "IMG_6669.jpg", "size": "XL", "sku": "MD12124BLACKXXL"}], "skuBase": "MD12124BLACKX"}, {"styleCode": "MD12126", "color": "BLACK", "description": "MD75 LONGSLEEVE", "price": 390.0, "sizes": {"M": 1, "XXL": 1}, "total": 2, "photos": [{"path": "md75/with%20barcode/IMG_6611.jpg", "filename": "IMG_6611.jpg", "size": "M", "sku": "MD12126BLACKM"}, {"path": "md75/with%20barcode/IMG_6645.jpg", "filename": "IMG_6645.jpg", "size": "XXL", "sku": "MD12126BLACKXXL"}], "skuBase": "MD12126BLACK"}, {"styleCode": "MD12126", "color": "BLK BLUE", "description": "MD75 LONGSLEEVE", "price": 390.0, "sizes": {"M": 1, "XXL": 1}, "total": 2, "photos": [{"path": "md75/with%20barcode/IMG_6608.jpg", "filename": "IMG_6608.jpg", "size": "M", "sku": "MD12126BLBLUM"}, {"path": "md75/with%20barcode/IMG_6649.jpg", "filename": "IMG_6649.jpg", "size": "XXL", "sku": "MD12126BLBLUXXL"}], "skuBase": "MD12126BLBLU"}, {"styleCode": "MD12126", "color": "Blu Black", "description": "(no-barcode tag)", "price": null, "sizes": {"S": 1}, "total": 1, "photos": [{"path": "md75/no%20barcode/IMG_6586.jpg", "filename": "IMG_6586.jpg", "size": "S", "sku": ""}], "skuBase": ""}, {"styleCode": "MD12127", "color": "BLACK", "description": "MD75 PANTS", "price": 345.0, "sizes": {"XS": 1, "S": 1, "L": 1}, "total": 3, "photos": [{"path": "md75/with%20barcode/IMG_6618.jpg", "filename": "IMG_6618.jpg", "size": "XS", "sku": "MD12127BLACKXS"}, {"path": "md75/with%20barcode/IMG_6621.jpg", "filename": "IMG_6621.jpg", "size": "S", "sku": "MD12127BLACKS"}, {"path": "md75/with%20barcode/IMG_6696.jpg", "filename": "IMG_6696.jpg", "size": "L", "sku": "MD12127BLACKL"}], "skuBase": "MD12127BLACK"}, {"styleCode": "MD12127", "color": "BLACK BASIC", "description": "MD75 PANTS", "price": 345.0, "sizes": {"XS": 1, "S": 1, "L": 1, "M": 1}, "total": 4, "photos": [{"path": "md75/with%20barcode/IMG_6617.jpg", "filename": "IMG_6617.jpg", "size": "XS", "sku": "MD12127BLBXS"}, {"path": "md75/with%20barcode/IMG_6624.jpg", "filename": "IMG_6624.jpg", "size": "S", "sku": "MD12127BLBS"}, {"path": "md75/with%20barcode/IMG_6631.jpg", "filename": "IMG_6631.jpg", "size": "L", "sku": "MD12127BLBL"}, {"path": "md75/with%20barcode/IMG_6695.jpg", "filename": "IMG_6695.jpg", "size": "M", "sku": "MD12127BLBM"}], "skuBase": "MD12127BLB"}, {"styleCode": "MD12130", "color": "BLACK SPRAY", "description": "MD75 LONGSLEEVE", "price": 405.0, "sizes": {"XXL": 1, "XL": 1, "L": 1}, "total": 3, "photos": [{"path": "md75/with%20barcode/IMG_6659.jpg", "filename": "IMG_6659.jpg", "size": "XXL", "sku": "MD12130BLSXXL"}, {"path": "md75/with%20barcode/IMG_6685.jpg", "filename": "IMG_6685.jpg", "size": "XL", "sku": "MD12130BLSXL"}, {"path": "md75/with%20barcode/IMG_6689.jpg", "filename": "IMG_6689.jpg", "size": "L", "sku": "MD12130BLSL"}], "skuBase": "MD12130BLS"}, {"styleCode": "MD12130", "color": "BLACK WHITE", "description": "MD75 LONGSLEEVE", "price": 315.0, "sizes": {"XL": 1}, "total": 1, "photos": [{"path": "md75/with%20barcode/IMG_6686.jpg", "filename": "IMG_6686.jpg", "size": "XL", "sku": "MD12130BWBLACKXL"}], "skuBase": "MD12130BWBLACK"}, {"styleCode": "MD12130", "color": "Black Spray", "description": "(no-barcode tag)", "price": null, "sizes": {"S": 1}, "total": 1, "photos": [{"path": "md75/no%20barcode/IMG_6584.jpg", "filename": "IMG_6584.jpg", "size": "S", "sku": ""}], "skuBase": ""}, {"styleCode": "MD12131", "color": "BLACK", "description": "MD75 LONGSLEEVE", "price": 690.0, "sizes": {"S": 1, "XXL": 1, "XL": 1}, "total": 3, "photos": [{"path": "md75/with%20barcode/IMG_6578.jpg", "filename": "IMG_6578.jpg", "size": "S", "sku": "MD12131BLACKS"}, {"path": "md75/with%20barcode/IMG_6655.jpg", "filename": "IMG_6655.jpg", "size": "XXL", "sku": "MD12131BLACKXXL"}, {"path": "md75/with%20barcode/IMG_6677.jpg", "filename": "IMG_6677.jpg", "size": "XL", "sku": "MD12131BLACKXL"}], "skuBase": "MD12131BLACK"}, {"styleCode": "MD12131", "color": "Black", "description": "(no-barcode tag)", "price": null, "sizes": {"M": 1}, "total": 1, "photos": [{"path": "md75/no%20barcode/IMG_6688.jpg", "filename": "IMG_6688.jpg", "size": "M", "sku": ""}], "skuBase": ""}, {"styleCode": "MD12131", "color": "GREY", "description": "MD75 LONGSLEEVE", "price": 690.0, "sizes": {"S": 1, "M": 1, "XXL": 1, "XL": 1}, "total": 4, "photos": [{"path": "md75/with%20barcode/IMG_6579.jpg", "filename": "IMG_6579.jpg", "size": "S", "sku": "MD12131GREYS"}, {"path": "md75/with%20barcode/IMG_6605.jpg", "filename": "IMG_6605.jpg", "size": "M", "sku": "MD12131GREYM"}, {"path": "md75/with%20barcode/IMG_6660.jpg", "filename": "IMG_6660.jpg", "size": "XXL", "sku": "MD12131GREYXXL"}, {"path": "md75/with%20barcode/IMG_6681.jpg", "filename": "IMG_6681.jpg", "size": "XL", "sku": "MD12131GREYXL"}], "skuBase": "MD12131GREY"}, {"styleCode": "MD12135", "color": "BLACK", "description": "MD75 LONGSLEEVE", "price": 690.0, "sizes": {"XXL": 1, "XL": 1}, "total": 2, "photos": [{"path": "md75/with%20barcode/IMG_6658.jpg", "filename": "IMG_6658.jpg", "size": "XXL", "sku": "MD12135BLACKXXL"}, {"path": "md75/with%20barcode/IMG_6678.jpg", "filename": "IMG_6678.jpg", "size": "XL", "sku": "MD12135BLACKXL"}], "skuBase": "MD12135BLACKX"}, {"styleCode": "MD12135", "color": "Black", "description": "(no-barcode tag)", "price": null, "sizes": {"S": 1}, "total": 1, "photos": [{"path": "md75/no%20barcode/IMG_6587.jpg", "filename": "IMG_6587.jpg", "size": "S", "sku": ""}], "skuBase": ""}, {"styleCode": "MD12135", "color": "WHITE", "description": "MD75 LONGSLEEVE", "price": 690.0, "sizes": {"S": 1, "XXL": 1, "XL": 1}, "total": 3, "photos": [{"path": "md75/with%20barcode/IMG_6582.jpg", "filename": "IMG_6582.jpg", "size": "S", "sku": "MD12135WHS"}, {"path": "md75/with%20barcode/IMG_6653.jpg", "filename": "IMG_6653.jpg", "size": "XXL", "sku": "MD12135WHXXL"}, {"path": "md75/with%20barcode/IMG_6680.jpg", "filename": "IMG_6680.jpg", "size": "XL", "sku": "MD12135WHXL"}], "skuBase": "MD12135WH"}, {"styleCode": "MD12135", "color": "White", "description": "(no-barcode tag)", "price": null, "sizes": {"M": 1}, "total": 1, "photos": [{"path": "md75/no%20barcode/IMG_6614.jpg", "filename": "IMG_6614.jpg", "size": "M", "sku": ""}], "skuBase": ""}, {"styleCode": "MD12136", "color": "BLACK GREY", "description": "MD75 LONGSLEEVE", "price": 792.0, "sizes": {"XXXL": 1}, "total": 1, "photos": [{"path": "md75/with%20barcode/IMG_6636.jpg", "filename": "IMG_6636.jpg", "size": "XXXL", "sku": "MD12136BLACKXXXL"}], "skuBase": "MD12136BLACK"}, {"styleCode": "MD12142", "color": "BluBlkBrowi", "description": "(no-barcode tag)", "price": null, "sizes": {"XXL": 1}, "total": 1, "photos": [{"path": "md75/no%20barcode/IMG_6707.jpg", "filename": "IMG_6707.jpg", "size": "XXL", "sku": ""}], "skuBase": ""}, {"styleCode": "MD12143", "color": "BLACK WHITE", "description": "MD75 LONGSLEEVE", "price": 312.0, "sizes": {"S": 1, "XXL": 1, "L": 1}, "total": 3, "photos": [{"path": "md75/with%20barcode/IMG_6580.jpg", "filename": "IMG_6580.jpg", "size": "S", "sku": "MD12143BLACKS"}, {"path": "md75/with%20barcode/IMG_6654.jpg", "filename": "IMG_6654.jpg", "size": "XXL", "sku": "MD12143BLACKXXL"}, {"path": "md75/with%20barcode/IMG_6687.jpg", "filename": "IMG_6687.jpg", "size": "L", "sku": "MD12143BLACKL"}], "skuBase": "MD12143BLACK"}, {"styleCode": "MD12151", "color": "BLACK", "description": "MD75 T-SHIRT", "price": 147.0, "sizes": {"M": 1, "XXL": 1, "XL": 1, "L": 1}, "total": 4, "photos": [{"path": "md75/with%20barcode/IMG_6606.jpg", "filename": "IMG_6606.jpg", "size": "M", "sku": "MD12151BLACKM"}, {"path": "md75/with%20barcode/IMG_6647.jpg", "filename": "IMG_6647.jpg", "size": "XXL", "sku": "MD12151BLACKXXL"}, {"path": "md75/with%20barcode/IMG_6674.jpg", "filename": "IMG_6674.jpg", "size": "XL", "sku": "MD12151BLACKXXL"}, {"path": "md75/with%20barcode/IMG_6703.jpg", "filename": "IMG_6703.jpg", "size": "L", "sku": "MD12151BLACKL"}], "skuBase": "MD12151BLACK"}, {"styleCode": "MD12151", "color": "WHITE", "description": "MD75 T-SHIRT", "price": 147.0, "sizes": {"S": 1, "M": 1, "XXL": 1}, "total": 3, "photos": [{"path": "md75/with%20barcode/IMG_6593.jpg", "filename": "IMG_6593.jpg", "size": "S", "sku": "MD12151WHS"}, {"path": "md75/with%20barcode/IMG_6602.jpg", "filename": "IMG_6602.jpg", "size": "M", "sku": "MD12151WHM"}, {"path": "md75/with%20barcode/IMG_6642.jpg", "filename": "IMG_6642.jpg", "size": "XXL", "sku": "MD12151WHXXL"}], "skuBase": "MD12151WH"}, {"styleCode": "MD12152", "color": "BLACK", "description": "MD75 T-SHIRT", "price": 192.0, "sizes": {"S": 1, "M": 1, "XXL": 1, "L": 1, "XL": 1}, "total": 5, "photos": [{"path": "md75/with%20barcode/IMG_6590.jpg", "filename": "IMG_6590.jpg", "size": "S", "sku": "MD12152BLACKS"}, {"path": "md75/with%20barcode/IMG_6607.jpg", "filename": "IMG_6607.jpg", "size": "M", "sku": "MD12152BLACKM"}, {"path": "md75/with%20barcode/IMG_6651.jpg", "filename": "IMG_6651.jpg", "size": "XXL", "sku": "MD12152BLACKXXL"}, {"path": "md75/with%20barcode/IMG_6665.jpg", "filename": "IMG_6665.jpg", "size": "L", "sku": "MD12152BLACKL"}, {"path": "md75/with%20barcode/IMG_6666.jpg", "filename": "IMG_6666.jpg", "size": "XL", "sku": "MD12152BLACKXL"}], "skuBase": "MD12152BLACK"}, {"styleCode": "MD12152", "color": "WHITE", "description": "MD75 T-SHIRT", "price": 192.0, "sizes": {"S": 1, "M": 1, "XXL": 1, "L": 1}, "total": 4, "photos": [{"path": "md75/with%20barcode/IMG_6591.jpg", "filename": "IMG_6591.jpg", "size": "S", "sku": "MD12152WHS"}, {"path": "md75/with%20barcode/IMG_6601.jpg", "filename": "IMG_6601.jpg", "size": "M", "sku": "MD12152WHS"}, {"path": "md75/with%20barcode/IMG_6641.jpg", "filename": "IMG_6641.jpg", "size": "XXL", "sku": "MD12152WHXXL"}, {"path": "md75/with%20barcode/IMG_6663.jpg", "filename": "IMG_6663.jpg", "size": "L", "sku": "MD12152WHL"}], "skuBase": "MD12152WH"}, {"styleCode": "MD12154", "color": "ANTRA DIS", "description": "MD75 T-SHIRT", "price": 200.0, "sizes": {"XL": 2}, "total": 2, "photos": [{"path": "md75/with%20barcode/IMG_6667.jpg", "filename": "IMG_6667.jpg", "size": "XL", "sku": "MD12154ANTRADXXL"}, {"path": "md75/with%20barcode/IMG_6670.jpg", "filename": "IMG_6670.jpg", "size": "XL", "sku": "MD12154ANTRADXL"}], "skuBase": "MD12154ANTRADX"}, {"styleCode": "MD12154", "color": "BLACK", "description": "MD75 T-SHIRT", "price": 200.0, "sizes": {"S": 1, "XL": 1}, "total": 2, "photos": [{"path": "md75/with%20barcode/IMG_6592.jpg", "filename": "IMG_6592.jpg", "size": "S", "sku": "MD12154BLACKS"}, {"path": "md75/with%20barcode/IMG_6671.jpg", "filename": "IMG_6671.jpg", "size": "XL", "sku": "MD12154BLACKXL"}], "skuBase": "MD12154BLACK"}, {"styleCode": "MD12154", "color": "PEARL", "description": "MD75 T-SHIRT", "price": 200.0, "sizes": {"XXL": 1, "L": 1}, "total": 2, "photos": [{"path": "md75/with%20barcode/IMG_6648.jpg", "filename": "IMG_6648.jpg", "size": "XXL", "sku": "MD12154PEARLXXL"}, {"path": "md75/with%20barcode/IMG_6699.jpg", "filename": "IMG_6699.jpg", "size": "L", "sku": "MD12154PEARLL"}], "skuBase": "MD12154PEARL"}, {"styleCode": "MD12161", "color": "BEIGE", "description": "MD75 T-SHIRT", "price": 180.0, "sizes": {"M": 1, "XXL": 1, "XL": 1}, "total": 3, "photos": [{"path": "md75/with%20barcode/IMG_6603.jpg", "filename": "IMG_6603.jpg", "size": "M", "sku": "MD12161BGM"}, {"path": "md75/with%20barcode/IMG_6644.jpg", "filename": "IMG_6644.jpg", "size": "XXL", "sku": "MD12161BGXXL"}, {"path": "md75/with%20barcode/IMG_6672.jpg", "filename": "IMG_6672.jpg", "size": "XL", "sku": "MD12161BGXL"}], "skuBase": "MD12161BG"}, {"styleCode": "MD12161", "color": "BLACK", "description": "MD75 T-SHIRT", "price": 180.0, "sizes": {"M": 1, "XXL": 1, "L": 1}, "total": 3, "photos": [{"path": "md75/with%20barcode/IMG_6615.jpg", "filename": "IMG_6615.jpg", "size": "M", "sku": "MD12161BLACKM"}, {"path": "md75/with%20barcode/IMG_6652.jpg", "filename": "IMG_6652.jpg", "size": "XXL", "sku": "MD12161BLACKXXL"}, {"path": "md75/with%20barcode/IMG_6664.jpg", "filename": "IMG_6664.jpg", "size": "L", "sku": "MD12161BLACKL"}], "skuBase": "MD12161BLACK"}, {"styleCode": "MD12161", "color": "BLUE", "description": "MD75 T-SHIRT", "price": 180.0, "sizes": {"XL": 1}, "total": 1, "photos": [{"path": "md75/with%20barcode/IMG_6675.jpg", "filename": "IMG_6675.jpg", "size": "XL", "sku": "MD12161BLUEXL"}], "skuBase": "MD12161BLUE"}, {"styleCode": "MD12174", "color": "Black", "description": "MD75 T-SHIRT", "price": 210.0, "sizes": {"S": 1, "M": 1, "XXL": 1}, "total": 3, "photos": [{"path": "md75/with%20barcode/IMG_6544.jpg", "filename": "IMG_6544.jpg", "size": "S", "sku": "MD12174BLACKS"}, {"path": "md75/with%20barcode/IMG_6616.jpg", "filename": "IMG_6616.jpg", "size": "M", "sku": "MD12174BLACKM"}, {"path": "md75/with%20barcode/IMG_6704.jpg", "filename": "IMG_6704.jpg", "size": "XXL", "sku": "MD12174BLACKXXL"}], "skuBase": "MD12174BLACK"}, {"styleCode": "MD12174", "color": "MILITARY RESIN", "description": "MD75 T-SHIRT", "price": 210.0, "sizes": {"M": 1, "XXL": 1, "XL": 1}, "total": 3, "photos": [{"path": "md75/with%20barcode/IMG_6600.jpg", "filename": "IMG_6600.jpg", "size": "M", "sku": "MD12174MILITARY RESINM"}, {"path": "md75/with%20barcode/IMG_6646.jpg", "filename": "IMG_6646.jpg", "size": "XXL", "sku": "MD12174MILITARY RESINXXL"}, {"path": "md75/with%20barcode/IMG_6673.jpg", "filename": "IMG_6673.jpg", "size": "XL", "sku": "MD12174MILITARY RESINXL"}], "skuBase": "MD12174MILITARY RESIN"}, {"styleCode": "MD12174", "color": "White", "description": "MD75 T-SHIRT", "price": 210.0, "sizes": {"S": 1, "XXL": 1}, "total": 2, "photos": [{"path": "md75/with%20barcode/IMG_6545.jpg", "filename": "IMG_6545.jpg", "size": "S", "sku": "MD12174WHS"}, {"path": "md75/with%20barcode/IMG_6638.jpg", "filename": "IMG_6638.jpg", "size": "XXL", "sku": "MD12174WHXXL"}], "skuBase": "MD12174WH"}, {"styleCode": "MD12201", "color": "BLACK BASIC", "description": "KNIT", "price": 278.0, "sizes": {"L": 1, "XXXL": 1}, "total": 2, "photos": [{"path": "md75/with%20barcode/IMG_6531.jpg", "filename": "IMG_6531.jpg", "size": "L", "sku": "MD12201BLBL"}, {"path": "md75/with%20barcode/IMG_6573.jpg", "filename": "IMG_6573.jpg", "size": "XXXL", "sku": "MD12201BLBXXXL"}], "skuBase": "MD12201BLB"}, {"styleCode": "MD12201", "color": "Black Basic", "description": "(no-barcode tag)", "price": null, "sizes": {"XXXL M/C": 1}, "total": 1, "photos": [{"path": "md75/no%20barcode/IMG_6575.jpg", "filename": "IMG_6575.jpg", "size": "XXXL M/C", "sku": ""}], "skuBase": ""}, {"styleCode": "MD12207", "color": "BLACK CAPPUCCINO", "description": "KNIT", "price": 305.0, "sizes": {"XXL": 1, "XL": 1}, "total": 2, "photos": [{"path": "md75/with%20barcode/IMG_6564.jpg", "filename": "IMG_6564.jpg", "size": "XXL", "sku": "MD12207BLCAXXL"}, {"path": "md75/with%20barcode/IMG_6706.jpg", "filename": "IMG_6706.jpg", "size": "XL", "sku": "MD12207BLCAXL"}], "skuBase": "MD12207BLCAX"}, {"styleCode": "MD12211", "color": "BLACK DETAIL AMBER", "description": "KNIT", "price": 260.0, "sizes": {"M": 1, "XXL": 2}, "total": 3, "photos": [{"path": "md75/with%20barcode/IMG_6538.jpg", "filename": "IMG_6538.jpg", "size": "M", "sku": "MD12211BLDAMM"}, {"path": "md75/with%20barcode/IMG_6563.jpg", "filename": "IMG_6563.jpg", "size": "XXL", "sku": "MD12211BLDAMXXL"}, {"path": "md75/with%20barcode/IMG_6565.jpg", "filename": "IMG_6565.jpg", "size": "XXL", "sku": "MD12211BLDAMXXL"}], "skuBase": "MD12211BLDAM"}, {"styleCode": "MD12214", "color": "BLACK", "description": "KNIT", "price": 350.0, "sizes": {"XXXL": 1, "XL": 1, "L": 1}, "total": 3, "photos": [{"path": "md75/with%20barcode/IMG_6570.jpg", "filename": "IMG_6570.jpg", "size": "XXXL", "sku": "MD12214BLACKXXXL"}, {"path": "md75/with%20barcode/IMG_6709.jpg", "filename": "IMG_6709.jpg", "size": "XL", "sku": "MD12214BLACKXL"}, {"path": "md75/with%20barcode/IMG_6711.jpg", "filename": "IMG_6711.jpg", "size": "L", "sku": "MD12214BLACKL"}], "skuBase": "MD12214BLACK"}, {"styleCode": "MD12217", "color": "BLUE CAM", "description": "MD75 LONGSLEEVE", "price": 318.0, "sizes": {"L": 1}, "total": 1, "photos": [{"path": "md75/with%20barcode/IMG_6537.jpg", "filename": "IMG_6537.jpg", "size": "L", "sku": "MD12217BLUCMBKL"}], "skuBase": "MD12217BLUCMBK"}, {"styleCode": "MD12217", "color": "White", "description": "(no-barcode tag)", "price": null, "sizes": {"M": 1}, "total": 1, "photos": [{"path": "md75/no%20barcode/IMG_6543.jpg", "filename": "IMG_6543.jpg", "size": "M", "sku": ""}], "skuBase": ""}, {"styleCode": "MD12220", "color": "GRAFITE BLK", "description": "KNIT", "price": 330.0, "sizes": {"XL": 1, "L": 1, "XXL": 1}, "total": 3, "photos": [{"path": "md75/with%20barcode/IMG_6553.jpg", "filename": "IMG_6553.jpg", "size": "XL", "sku": "MD12220GRAFBXL"}, {"path": "md75/with%20barcode/IMG_6708.jpg", "filename": "IMG_6708.jpg", "size": "L", "sku": "MD12220GRAFBL"}, {"path": "md75/with%20barcode/IMG_6712.jpg", "filename": "IMG_6712.jpg", "size": "XXL", "sku": "MD12220GRAFBXXL"}], "skuBase": "MD12220GRAFB"}, {"styleCode": "MD12220", "color": "Grafite Blk", "description": "(no-barcode tag)", "price": null, "sizes": {"L": 1, "XXXL": 1}, "total": 2, "photos": [{"path": "md75/no%20barcode/IMG_6532.jpg", "filename": "IMG_6532.jpg", "size": "L", "sku": ""}, {"path": "md75/no%20barcode/IMG_6574.jpg", "filename": "IMG_6574.jpg", "size": "XXXL", "sku": ""}], "skuBase": ""}, {"styleCode": "MD12224", "color": "BLACK CAST", "description": "KNIT", "price": 260.0, "sizes": {"L": 3, "XL": 1}, "total": 4, "photos": [{"path": "md75/with%20barcode/IMG_6527.jpg", "filename": "IMG_6527.jpg", "size": "L", "sku": "MD12224BLCL"}, {"path": "md75/with%20barcode/IMG_6533.jpg", "filename": "IMG_6533.jpg", "size": "L", "sku": "MD12224BLCL"}, {"path": "md75/with%20barcode/IMG_6536.jpg", "filename": "IMG_6536.jpg", "size": "L", "sku": "MD12224BLCL"}, {"path": "md75/with%20barcode/IMG_6551.jpg", "filename": "IMG_6551.jpg", "size": "XL", "sku": "MD12224BLCXL"}], "skuBase": "MD12224BLC"}, {"styleCode": "MD12226", "color": "DIRTY BLACK", "description": "KNIT", "price": 270.0, "sizes": {"XL": 1}, "total": 1, "photos": [{"path": "md75/with%20barcode/IMG_6556.jpg", "filename": "IMG_6556.jpg", "size": "XL", "sku": "MD12226DIBLXL"}], "skuBase": "MD12226DIBL"}, {"styleCode": "MD12226", "color": "DIRTY WHITE", "description": "KNIT", "price": 270.0, "sizes": {"S": 1}, "total": 1, "photos": [{"path": "md75/with%20barcode/IMG_6546.jpg", "filename": "IMG_6546.jpg", "size": "S", "sku": "MD12226DIWHS"}], "skuBase": "MD12226DIWH"}, {"styleCode": "MD12226", "color": "GRAFITE BLK", "description": "KNIT", "price": 270.0, "sizes": {"L": 1}, "total": 1, "photos": [{"path": "md75/with%20barcode/IMG_6529.jpg", "filename": "IMG_6529.jpg", "size": "L", "sku": "MD12226GRAFL"}], "skuBase": "MD12226GRAF"}, {"styleCode": "MD12226", "color": "Grafite Blk", "description": "(no-barcode tag)", "price": null, "sizes": {"XL": 1}, "total": 1, "photos": [{"path": "md75/no%20barcode/IMG_6554.jpg", "filename": "IMG_6554.jpg", "size": "XL", "sku": ""}], "skuBase": ""}, {"styleCode": "MD12226", "color": "White Dirty", "description": "(no-barcode tag)", "price": null, "sizes": {"XXL": 1}, "total": 1, "photos": [{"path": "md75/no%20barcode/IMG_6566.jpg", "filename": "IMG_6566.jpg", "size": "XXL", "sku": ""}], "skuBase": ""}, {"styleCode": "MD12230", "color": "BLACK SPRAY", "description": "KNIT PANTS", "price": 280.0, "sizes": {"S": 2, "M": 2}, "total": 4, "photos": [{"path": "md75/with%20barcode/IMG_6514.jpg", "filename": "IMG_6514.jpg", "size": "S", "sku": "MD12230BLSS"}, {"path": "md75/with%20barcode/IMG_6515.jpg", "filename": "IMG_6515.jpg", "size": "S", "sku": "MD12230BLSS"}, {"path": "md75/with%20barcode/IMG_6518.jpg", "filename": "IMG_6518.jpg", "size": "M", "sku": "MD12230BLSM"}, {"path": "md75/with%20barcode/IMG_6519.jpg", "filename": "IMG_6519.jpg", "size": "M", "sku": "MD12230BLSM"}], "skuBase": "MD12230BLS"}, {"styleCode": "MD12230", "color": "Black Black", "description": "(no-barcode tag)", "price": null, "sizes": {"M": 1}, "total": 1, "photos": [{"path": "md75/no%20barcode/IMG_6517.jpg", "filename": "IMG_6517.jpg", "size": "M", "sku": ""}], "skuBase": ""}, {"styleCode": "MD12231", "color": "BLACK AMBER", "description": "KNIT", "price": 272.0, "sizes": {"L": 1, "M": 2, "XXL": 1, "XL": 1}, "total": 5, "photos": [{"path": "md75/with%20barcode/IMG_6528.jpg", "filename": "IMG_6528.jpg", "size": "L", "sku": "MD12231BLAL"}, {"path": "md75/with%20barcode/IMG_6539.jpg", "filename": "IMG_6539.jpg", "size": "M", "sku": "MD12231BLAM"}, {"path": "md75/with%20barcode/IMG_6542.jpg", "filename": "IMG_6542.jpg", "size": "M", "sku": "MD12231BLAM"}, {"path": "md75/with%20barcode/IMG_6550.jpg", "filename": "IMG_6550.jpg", "size": "XXL", "sku": "MD12231BLAXXL"}, {"path": "md75/with%20barcode/IMG_6561.jpg", "filename": "IMG_6561.jpg", "size": "XL", "sku": "MD12231BLAXL"}], "skuBase": "MD12231BLA"}, {"styleCode": "MD12234", "color": "ANTRA WASH", "description": "KNIT PANTS", "price": 264.0, "sizes": {"S": 1, "M": 1}, "total": 2, "photos": [{"path": "md75/with%20barcode/IMG_6513.jpg", "filename": "IMG_6513.jpg", "size": "S", "sku": "MD12234ANWAS"}, {"path": "md75/with%20barcode/IMG_6522.jpg", "filename": "IMG_6522.jpg", "size": "M", "sku": "MD12234ANWAM"}], "skuBase": "MD12234ANWA"}, {"styleCode": "MD12234", "color": "Antra Wash", "description": "(no-barcode tag)", "price": null, "sizes": {"M": 2}, "total": 2, "photos": [{"path": "md75/no%20barcode/IMG_6520.jpg", "filename": "IMG_6520.jpg", "size": "M", "sku": ""}, {"path": "md75/no%20barcode/IMG_6521.jpg", "filename": "IMG_6521.jpg", "size": "M", "sku": ""}], "skuBase": ""}, {"styleCode": "MD12236", "color": "GREY AMBER BLACK", "description": "KNIT PANTS", "price": 263.0, "sizes": {"XS": 1}, "total": 1, "photos": [{"path": "md75/with%20barcode/IMG_6512.jpg", "filename": "IMG_6512.jpg", "size": "XS", "sku": "MD12236ABLXS"}], "skuBase": "MD12236ABL"}, {"styleCode": "MD12239", "color": "BLACK AMBER", "description": "KNIT PANTS", "price": 291.0, "sizes": {"L": 2, "M": 2, "XXL": 1}, "total": 5, "photos": [{"path": "md75/with%20barcode/IMG_6526.jpg", "filename": "IMG_6526.jpg", "size": "L", "sku": "MD12239BLAL"}, {"path": "md75/with%20barcode/IMG_6534.jpg", "filename": "IMG_6534.jpg", "size": "L", "sku": "MD12239BLAL"}, {"path": "md75/with%20barcode/IMG_6540.jpg", "filename": "IMG_6540.jpg", "size": "M", "sku": "MD12239BLAM"}, {"path": "md75/with%20barcode/IMG_6541.jpg", "filename": "IMG_6541.jpg", "size": "M", "sku": "MD12239BLAM"}, {"path": "md75/with%20barcode/IMG_6567.jpg", "filename": "IMG_6567.jpg", "size": "XXL", "sku": "MD12239BLAXXL"}], "skuBase": "MD12239BLA"}, {"styleCode": "MD12243", "color": "GREY BLACK", "description": "KNIT", "price": 240.0, "sizes": {"XXL": 1}, "total": 1, "photos": [{"path": "md75/with%20barcode/IMG_6559.jpg", "filename": "IMG_6559.jpg", "size": "XXL", "sku": "MD12243GRBLXXL"}], "skuBase": "MD12243GRBL"}, {"styleCode": "MD12251", "color": "ANTRA RESIN", "description": "TSHIRT", "price": 177.0, "sizes": {"L": 1, "M": 1}, "total": 2, "photos": [{"path": "md75/with%20barcode/IMG_6530.jpg", "filename": "IMG_6530.jpg", "size": "L", "sku": "MD12251ANTREL"}, {"path": "md75/with%20barcode/IMG_6702.jpg", "filename": "IMG_6702.jpg", "size": "M", "sku": "MD12251ANTREM"}], "skuBase": "MD12251ANTRE"}, {"styleCode": "MD12251", "color": "Antra Resin", "description": "(no-barcode tag)", "price": null, "sizes": {"XL": 1}, "total": 1, "photos": [{"path": "md75/no%20barcode/IMG_6555.jpg", "filename": "IMG_6555.jpg", "size": "XL", "sku": ""}], "skuBase": ""}, {"styleCode": "MD12258", "color": "ANTRA SALT", "description": "TSHIRT", "price": 170.0, "sizes": {"L": 1, "XL": 1}, "total": 2, "photos": [{"path": "md75/with%20barcode/IMG_6535.jpg", "filename": "IMG_6535.jpg", "size": "L", "sku": "MD12258ANSAL"}, {"path": "md75/with%20barcode/IMG_6552.jpg", "filename": "IMG_6552.jpg", "size": "XL", "sku": "MD12258ANSAXL"}], "skuBase": "MD12258ANSA"}, {"styleCode": "MD12262", "color": "Sand Resin", "description": "(no-barcode tag)", "price": null, "sizes": {"L": 1}, "total": 1, "photos": [{"path": "md75/no%20barcode/IMG_6705.jpg", "filename": "IMG_6705.jpg", "size": "L", "sku": ""}], "skuBase": ""}, {"styleCode": "MD12265", "color": "BLACK BASIC", "description": "SWEATSHIRT SHORT", "price": 320.0, "sizes": {"M": 1}, "total": 1, "photos": [{"path": "md75/with%20barcode/IMG_6516.jpg", "filename": "IMG_6516.jpg", "size": "M", "sku": "MD12265BLBM"}], "skuBase": "MD12265BLB"}, {"styleCode": "MD12282", "color": "ANTRACITE WASH", "description": "PANTS", "price": 370.0, "sizes": {"S": 1}, "total": 1, "photos": [{"path": "md75/with%20barcode/IMG_6697.jpg", "filename": "IMG_6697.jpg", "size": "S", "sku": "MD12282ANWS"}], "skuBase": "MD12282ANW"}, {"styleCode": "MD12285", "color": "BLACK BASIC", "description": "SWEATSHIRT SHORT", "price": 320.0, "sizes": {"XL": 1}, "total": 1, "photos": [{"path": "md75/with%20barcode/IMG_6549.jpg", "filename": "IMG_6549.jpg", "size": "XL", "sku": "MD12285BLBXL"}], "skuBase": "MD12285BLB"}, {"styleCode": "MD12285", "color": "GREY RESIN", "description": "SWEATSHIRT SHORT", "price": 320.0, "sizes": {"XL": 1}, "total": 1, "photos": [{"path": "md75/with%20barcode/IMG_6547.jpg", "filename": "IMG_6547.jpg", "size": "XL", "sku": "MD12285GRXL"}], "skuBase": "MD12285GR"}, {"styleCode": "MD12285", "color": "WHITE BASIC", "description": "SWEATSHIRT SHORT", "price": 320.0, "sizes": {"XL": 1}, "total": 1, "photos": [{"path": "md75/with%20barcode/IMG_6548.jpg", "filename": "IMG_6548.jpg", "size": "XL", "sku": "MD12285WHBXL"}], "skuBase": "MD12285WHB"}, {"styleCode": "MD12285", "color": "White Basic", "description": "(no-barcode tag)", "price": null, "sizes": {"M": 1}, "total": 1, "photos": [{"path": "md75/no%20barcode/IMG_6523.jpg", "filename": "IMG_6523.jpg", "size": "M", "sku": ""}], "skuBase": ""}, {"styleCode": "MD12287", "color": "BLACK BASIC", "description": "SHIRT", "price": 333.0, "sizes": {"L": 1}, "total": 1, "photos": [{"path": "md75/with%20barcode/IMG_6700.jpg", "filename": "IMG_6700.jpg", "size": "L", "sku": "MD12287BLBL"}], "skuBase": "MD12287BLB"}, {"styleCode": "MD13206A", "color": "Sughero", "description": "(no-barcode tag)", "price": null, "sizes": {"L": 3, "M": 1, "XXXL": 1, "XXL": 1, "XL": 1}, "total": 7, "photos": [{"path": "md75/no%20barcode/IMG_6508.jpg", "filename": "IMG_6508.jpg", "size": "L", "sku": ""}, {"path": "md75/no%20barcode/IMG_6599.jpg", "filename": "IMG_6599.jpg", "size": "M", "sku": ""}, {"path": "md75/no%20barcode/IMG_6634.jpg", "filename": "IMG_6634.jpg", "size": "XXXL", "sku": ""}, {"path": "md75/no%20barcode/IMG_6639.jpg", "filename": "IMG_6639.jpg", "size": "XXL", "sku": ""}, {"path": "md75/no%20barcode/IMG_6662.jpg", "filename": "IMG_6662.jpg", "size": "L", "sku": ""}, {"path": "md75/no%20barcode/IMG_6683.jpg", "filename": "IMG_6683.jpg", "size": "XL", "sku": ""}, {"path": "md75/no%20barcode/IMG_6720.jpg", "filename": "IMG_6720.jpg", "size": "L", "sku": ""}], "skuBase": ""}, {"styleCode": "MD13207", "color": "White Ash", "description": "(no-barcode tag)", "price": null, "sizes": {"L": 2, "S": 1, "M": 1, "XXXL": 1, "XXL": 1, "XL": 1}, "total": 7, "photos": [{"path": "md75/no%20barcode/IMG_6507.jpg", "filename": "IMG_6507.jpg", "size": "L", "sku": ""}, {"path": "md75/no%20barcode/IMG_6588.jpg", "filename": "IMG_6588.jpg", "size": "S", "sku": ""}, {"path": "md75/no%20barcode/IMG_6598.jpg", "filename": "IMG_6598.jpg", "size": "M", "sku": ""}, {"path": "md75/no%20barcode/IMG_6633.jpg", "filename": "IMG_6633.jpg", "size": "XXXL", "sku": ""}, {"path": "md75/no%20barcode/IMG_6637.jpg", "filename": "IMG_6637.jpg", "size": "XXL", "sku": ""}, {"path": "md75/no%20barcode/IMG_6682.jpg", "filename": "IMG_6682.jpg", "size": "XL", "sku": ""}, {"path": "md75/no%20barcode/IMG_6719.jpg", "filename": "IMG_6719.jpg", "size": "L", "sku": ""}], "skuBase": ""}, {"styleCode": "MD13227", "color": "Black", "description": "(no-barcode tag)", "price": null, "sizes": {"L": 2, "S": 1, "M": 1, "XXXL": 1, "XL": 1}, "total": 6, "photos": [{"path": "md75/no%20barcode/IMG_6509.jpg", "filename": "IMG_6509.jpg", "size": "L", "sku": ""}, {"path": "md75/no%20barcode/IMG_6589.jpg", "filename": "IMG_6589.jpg", "size": "S", "sku": ""}, {"path": "md75/no%20barcode/IMG_6597.jpg", "filename": "IMG_6597.jpg", "size": "M", "sku": ""}, {"path": "md75/no%20barcode/IMG_6635.jpg", "filename": "IMG_6635.jpg", "size": "XXXL", "sku": ""}, {"path": "md75/no%20barcode/IMG_6684.jpg", "filename": "IMG_6684.jpg", "size": "XL", "sku": ""}, {"path": "md75/no%20barcode/IMG_6718.jpg", "filename": "IMG_6718.jpg", "size": "L", "sku": ""}], "skuBase": ""}, {"styleCode": "MD13276L", "color": "Eggs Dissolv", "description": "(no-barcode tag)", "price": null, "sizes": {"S": 2, "M": 1, "L": 1, "XL": 1}, "total": 5, "photos": [{"path": "md75/no%20barcode/IMG_6511.jpg", "filename": "IMG_6511.jpg", "size": "S", "sku": ""}, {"path": "md75/no%20barcode/IMG_6625.jpg", "filename": "IMG_6625.jpg", "size": "M", "sku": ""}, {"path": "md75/no%20barcode/IMG_6628.jpg", "filename": "IMG_6628.jpg", "size": "L", "sku": ""}, {"path": "md75/no%20barcode/IMG_6632.jpg", "filename": "IMG_6632.jpg", "size": "XL", "sku": ""}, {"path": "md75/no%20barcode/IMG_6716.jpg", "filename": "IMG_6716.jpg", "size": "S", "sku": ""}], "skuBase": ""}, {"styleCode": "MD13296", "color": "Ash Resin", "description": "(no-barcode tag)", "price": null, "sizes": {"L": 2}, "total": 2, "photos": [{"path": "md75/no%20barcode/IMG_6510.jpg", "filename": "IMG_6510.jpg", "size": "L", "sku": ""}, {"path": "md75/no%20barcode/IMG_6717.jpg", "filename": "IMG_6717.jpg", "size": "L", "sku": ""}], "skuBase": ""}], "sizes": ["XS", "S", "M", "L", "XL", "XXL", "XXXL", "XXXL M/C"], "stats": {"totalUnits": 207, "uniqueRows": 96, "topColor": "BLACK", "mostExpensive": "MD12136 · BLACK GREY", "mostExpensivePrice": 792, "totalPhotos": 207}, "reviewNeeded": [{"filename": "IMG_6527.jpg", "path": "md75/with%20barcode/IMG_6527.jpg", "reason": "Price 260€ on this sticker, but other photos of same SKU show 275€ - genuine mixed pricing", "folder_label": "with barcode"}, {"filename": "IMG_6601.jpg", "path": "md75/with%20barcode/IMG_6601.jpg", "reason": "STICKER PRINT MISMATCH: size shows M but SKU ends with S - verify physical garment", "folder_label": "with barcode"}, {"filename": "IMG_6667.jpg", "path": "md75/with%20barcode/IMG_6667.jpg", "reason": "STICKER PRINT MISMATCH: size shows XL but SKU ends with XXL - verify physical garment", "folder_label": "with barcode"}, {"filename": "IMG_6575.jpg", "path": "md75/no%20barcode/IMG_6575.jpg", "reason": "Size on label reads 'XXXL M/C' - preserved as-is; M/C is likely a variant code", "folder_label": "no barcode"}]}, "Isaac Sellam": {"stockMatrix": [{"styleCode": "BIGSHORT-MICRO ONDES", "color": "BLACK", "description": "", "price": 448.0, "sizes": {"M": 1, "XL": 1, "S": 1}, "total": 3, "photos": [{"path": "isaac%20sellam/IMG_7031.jpg", "filename": "IMG_7031.jpg", "size": "M", "sku": "BIGSHORT-MICRO ONDESBLACKM"}, {"path": "isaac%20sellam/IMG_7040.jpg", "filename": "IMG_7040.jpg", "size": "XL", "sku": "BIGSHORT-MICRO ONDESBLACKXL"}, {"path": "isaac%20sellam/IMG_7076.jpg", "filename": "IMG_7076.jpg", "size": "S", "sku": "BIGSHORT-MICRO ONDESBLACKS"}], "skuBase": "BIGSHORT-MICRO ONDESBLACK"}, {"styleCode": "BIGSHORT-MICRO ONDES", "color": "SILVER", "description": "", "price": 448.0, "sizes": {"M": 1, "L": 1, "XL": 1, "S": 1}, "total": 4, "photos": [{"path": "isaac%20sellam/IMG_7032.jpg", "filename": "IMG_7032.jpg", "size": "M", "sku": "BIGSHORT-MICRO ONDESSILVERM"}, {"path": "isaac%20sellam/IMG_7036.jpg", "filename": "IMG_7036.jpg", "size": "L", "sku": "BIGSHORT-MICRO ONDESSILVERL"}, {"path": "isaac%20sellam/IMG_7039.jpg", "filename": "IMG_7039.jpg", "size": "XL", "sku": "BIGSHORT-MICRO ONDESSILVERXL"}, {"path": "isaac%20sellam/IMG_7077.jpg", "filename": "IMG_7077.jpg", "size": "S", "sku": "BIGSHORT-MICRO ONDESSILVERS"}], "skuBase": "BIGSHORT-MICRO ONDESSILVER"}, {"styleCode": "BIGSHORT-MICRO ONDES", "color": "WHITE", "description": "", "price": 448.0, "sizes": {"M": 1, "L": 1, "XL": 1, "S": 2}, "total": 5, "photos": [{"path": "isaac%20sellam/IMG_7033.jpg", "filename": "IMG_7033.jpg", "size": "M", "sku": "BIGSHORT-MICRO ONDESWHM"}, {"path": "isaac%20sellam/IMG_7037.jpg", "filename": "IMG_7037.jpg", "size": "L", "sku": "BIGSHORT-MICRO ONDESWHL"}, {"path": "isaac%20sellam/IMG_7038.jpg", "filename": "IMG_7038.jpg", "size": "XL", "sku": "BIGSHORT-MICRO ONDESWHXL"}, {"path": "isaac%20sellam/IMG_7079.jpg", "filename": "IMG_7079.jpg", "size": "S", "sku": "BIGSHORT-MICRO ONDESWHS"}, {"path": "isaac%20sellam/IMG_7086.jpg", "filename": "IMG_7086.jpg", "size": "S", "sku": "BIGSHORT-MICRO ONDESWHS"}], "skuBase": "BIGSHORT-MICRO ONDESWH"}, {"styleCode": "BL GAN", "color": "BLACK", "description": "ISAAC SELLAM", "price": 725.0, "sizes": {"S": 1, "L": 2, "M": 1}, "total": 4, "photos": [{"path": "isaac%20sellam/IMG_6972.jpg", "filename": "IMG_6972.jpg", "size": "S", "sku": "NE ARNBLACKS"}, {"path": "isaac%20sellam/IMG_6976.jpg", "filename": "IMG_6976.jpg", "size": "L", "sku": "BL GANBLACKL"}, {"path": "isaac%20sellam/IMG_6977.jpg", "filename": "IMG_6977.jpg", "size": "M", "sku": "BL GANBLACKM"}, {"path": "isaac%20sellam/IMG_7053.jpg", "filename": "IMG_7053.jpg", "size": "L", "sku": "NE ARNBLACKL"}], "skuBase": ""}, {"styleCode": "BLAZER-ARMURE", "color": "WHITE", "description": "BLAZER", "price": 697.2, "sizes": {"S": 1, "XL": 1}, "total": 2, "photos": [{"path": "isaac%20sellam/IMG_6979.jpg", "filename": "IMG_6979.jpg", "size": "S", "sku": "BLAZER-ARMUREWHS"}, {"path": "isaac%20sellam/IMG_7054.jpg", "filename": "IMG_7054.jpg", "size": "XL", "sku": "BLAZER-ARMUREWHXL"}], "skuBase": "BLAZER-ARMUREWH"}, {"styleCode": "DANDY-MICRO ONDES", "color": "BLACK", "description": "", "price": 448.0, "sizes": {"M": 1, "XL": 1, "L": 1}, "total": 3, "photos": [{"path": "isaac%20sellam/IMG_7027.jpg", "filename": "IMG_7027.jpg", "size": "M", "sku": "DANDY-MICRO ONDESBLACKM"}, {"path": "isaac%20sellam/IMG_7046.jpg", "filename": "IMG_7046.jpg", "size": "XL", "sku": "DANDY-MICRO ONDESBLACKXL"}, {"path": "isaac%20sellam/IMG_7075.jpg", "filename": "IMG_7075.jpg", "size": "L", "sku": "DANDY-MICRO ONDESBLACKL"}], "skuBase": "DANDY-MICRO ONDESBLACK"}, {"styleCode": "DANDY-MICRO ONDES", "color": "WHITE", "description": "", "price": 448.0, "sizes": {"M": 1, "XL": 1, "L": 1}, "total": 3, "photos": [{"path": "isaac%20sellam/IMG_7034.jpg", "filename": "IMG_7034.jpg", "size": "M", "sku": "DANDY-MICRO ONDESWHM"}, {"path": "isaac%20sellam/IMG_7047.jpg", "filename": "IMG_7047.jpg", "size": "XL", "sku": "DANDY-MICRO ONDESWHXL"}, {"path": "isaac%20sellam/IMG_7071.jpg", "filename": "IMG_7071.jpg", "size": "L", "sku": "DANDY-MICRO ONDESWHL"}], "skuBase": "DANDY-MICRO ONDESWH"}, {"styleCode": "G ARN", "color": "BLACK", "description": "ISAAC SELLAM", "price": 781.0, "sizes": {"XXL": 1}, "total": 1, "photos": [{"path": "isaac%20sellam/IMG_6971.jpg", "filename": "IMG_6971.jpg", "size": "XXL", "sku": "G ARNBLACKXXL"}], "skuBase": "G ARNBLACK"}, {"styleCode": "GUSSETSHORT GAUFRE", "color": "BLACK", "description": "", "price": 361.2, "sizes": {"M": 1, "L": 1, "XL": 1}, "total": 3, "photos": [{"path": "isaac%20sellam/IMG_6983.jpg", "filename": "IMG_6983.jpg", "size": "M", "sku": "GUSSETSHORT GAUFREBLACKM"}, {"path": "isaac%20sellam/IMG_7013.jpg", "filename": "IMG_7013.jpg", "size": "L", "sku": "GUSSETSHORT GAUFREBLACKL"}, {"path": "isaac%20sellam/IMG_7016.jpg", "filename": "IMG_7016.jpg", "size": "XL", "sku": "GUSSETSHORT GAUFREBLACKXL"}], "skuBase": "GUSSETSHORT GAUFREBLACK"}, {"styleCode": "HIGHBOMB-STRIPE", "color": "BLACK", "description": "", "price": 641.2, "sizes": {"S": 1}, "total": 1, "photos": [{"path": "isaac%20sellam/IMG_7058.jpg", "filename": "IMG_7058.jpg", "size": "S", "sku": "HIGHBOMB-STRIPEBLACKS"}], "skuBase": "HIGHBOMB-STRIPEBLACK"}, {"styleCode": "HIGHBOMB-STRIPE", "color": "GREY", "description": "", "price": 641.2, "sizes": {"M": 1}, "total": 1, "photos": [{"path": "isaac%20sellam/IMG_6980.jpg", "filename": "IMG_6980.jpg", "size": "M", "sku": "HIGHBOMB-STRIPEGREYM"}], "skuBase": "HIGHBOMB-STRIPEGREY"}, {"styleCode": "HORIZON LST JERSEY E2", "color": "GREY", "description": "ISAAC SELLAM", "price": 193.0, "sizes": {"M": 1}, "total": 1, "photos": [{"path": "isaac%20sellam/IMG_7001.jpg", "filename": "IMG_7001.jpg", "size": "M", "sku": "HORIZON LST JERSEY E25GREYM"}], "skuBase": "HORIZON LST JERSEY E25GREY"}, {"styleCode": "HORIZON LST JERSEY E25", "color": "BLACK", "description": "ISAAC SELLAM", "price": 193.0, "sizes": {"XL": 2}, "total": 2, "photos": [{"path": "isaac%20sellam/IMG_6988.jpg", "filename": "IMG_6988.jpg", "size": "XL", "sku": "HORIZON LST JERSEY E25BLACKXL"}, {"path": "isaac%20sellam/IMG_6992.jpg", "filename": "IMG_6992.jpg", "size": "XL", "sku": "HORIZON LST JERSEY E25BLACKXL"}], "skuBase": "HORIZON LST JERSEY E25BLACKXL"}, {"styleCode": "HORIZON LST JERSEY E25", "color": "GREY", "description": "ISAAC SELLAM", "price": 193.0, "sizes": {"M": 1}, "total": 1, "photos": [{"path": "isaac%20sellam/IMG_7055.jpg", "filename": "IMG_7055.jpg", "size": "M", "sku": "HORIZON LST JERSEY E25GREYM"}], "skuBase": "HORIZON LST JERSEY E25GREY"}, {"styleCode": "LC4 POCKETS-ARMURE E26", "color": "BLACK", "description": "", "price": 506.0, "sizes": {"XL": 1}, "total": 1, "photos": [{"path": "isaac%20sellam/IMG_7080.jpg", "filename": "IMG_7080.jpg", "size": "XL", "sku": "LC4 POCKETS-ARMURE E26BLACKXL"}], "skuBase": "LC4 POCKETS-ARMURE E26BLACK"}, {"styleCode": "LC4 POCKETS-ARMURE E26", "color": "WHITE", "description": "", "price": 506.0, "sizes": {"M": 1, "L": 1, "XL": 1, "S": 1}, "total": 4, "photos": [{"path": "isaac%20sellam/IMG_7026.jpg", "filename": "IMG_7026.jpg", "size": "M", "sku": "LC4 POCKETS-ARMURE E26WHM"}, {"path": "isaac%20sellam/IMG_7035.jpg", "filename": "IMG_7035.jpg", "size": "L", "sku": "LC4 POCKETS-ARMURE E26WHL"}, {"path": "isaac%20sellam/IMG_7041.jpg", "filename": "IMG_7041.jpg", "size": "XL", "sku": "LC4 POCKETS-ARMURE E26WHXL"}, {"path": "isaac%20sellam/IMG_7081.jpg", "filename": "IMG_7081.jpg", "size": "S", "sku": "LC4 POCKETS-ARMURE E26WHS"}], "skuBase": "LC4 POCKETS-ARMURE E26WH"}, {"styleCode": "LOYAL T-JERLIN", "color": "BLACK", "description": "", "price": 195.0, "sizes": {"M": 1}, "total": 1, "photos": [{"path": "isaac%20sellam/IMG_7072.jpg", "filename": "IMG_7072.jpg", "size": "M", "sku": "LOYAL T-JERLINBLACKM"}], "skuBase": "LOYAL T-JERLINBLACK"}, {"styleCode": "LOYAL T-JERLIN", "color": "SILVER", "description": "", "price": 195.0, "sizes": {"M": 1, "XL": 1, "L": 1}, "total": 3, "photos": [{"path": "isaac%20sellam/IMG_7025.jpg", "filename": "IMG_7025.jpg", "size": "M", "sku": "LOYAL T-JERLINSILVERM"}, {"path": "isaac%20sellam/IMG_7043.jpg", "filename": "IMG_7043.jpg", "size": "XL", "sku": "LOYAL T-JERLINSILVERXL"}, {"path": "isaac%20sellam/IMG_7066.jpg", "filename": "IMG_7066.jpg", "size": "L", "sku": "LOYAL T-JERLINSILVERL"}], "skuBase": "LOYAL T-JERLINSILVER"}, {"styleCode": "LOYAL T-JERLIN", "color": "WHITE", "description": "", "price": 195.0, "sizes": {"L": 1}, "total": 1, "photos": [{"path": "isaac%20sellam/IMG_7069.jpg", "filename": "IMG_7069.jpg", "size": "L", "sku": "LOYAL T-JERLINWHL"}], "skuBase": "LOYAL T-JERLINWH"}, {"styleCode": "LOYAL T-JERSEY E26", "color": "BLACK", "description": "", "price": 149.0, "sizes": {"M": 1, "L": 1}, "total": 2, "photos": [{"path": "isaac%20sellam/IMG_7030.jpg", "filename": "IMG_7030.jpg", "size": "M", "sku": "LOYAL T-JERSEY E26BLACKM"}, {"path": "isaac%20sellam/IMG_7073.jpg", "filename": "IMG_7073.jpg", "size": "L", "sku": "LOYAL T-JERSEY E26BLACKL"}], "skuBase": "LOYAL T-JERSEY E26BLACK"}, {"styleCode": "LOYAL T-JERSEY E26", "color": "SILVER", "description": "", "price": 149.0, "sizes": {"M": 1, "L": 1}, "total": 2, "photos": [{"path": "isaac%20sellam/IMG_7029.jpg", "filename": "IMG_7029.jpg", "size": "M", "sku": "LOYAL T-JERSEY E26SILVERM"}, {"path": "isaac%20sellam/IMG_7065.jpg", "filename": "IMG_7065.jpg", "size": "L", "sku": "LOYAL T-JERSEY E26SILVERL"}], "skuBase": "LOYAL T-JERSEY E26SILVER"}, {"styleCode": "LOYAL T-JERSEY E26", "color": "WHITE", "description": "", "price": 149.0, "sizes": {"M": 1, "XL": 1, "L": 1}, "total": 3, "photos": [{"path": "isaac%20sellam/IMG_7028.jpg", "filename": "IMG_7028.jpg", "size": "M", "sku": "LOYAL T-JERSEY E26WHM"}, {"path": "isaac%20sellam/IMG_7044.jpg", "filename": "IMG_7044.jpg", "size": "XL", "sku": "LOYAL T-JERSEY E26WHXL"}, {"path": "isaac%20sellam/IMG_7068.jpg", "filename": "IMG_7068.jpg", "size": "L", "sku": "LOYAL T-JERSEY E26WHL"}], "skuBase": "LOYAL T-JERSEY E26WH"}, {"styleCode": "LOYAL T-MICRO ONDES", "color": "BLACK", "description": "", "price": 225.0, "sizes": {"M": 1, "XL": 1, "L": 1}, "total": 3, "photos": [{"path": "isaac%20sellam/IMG_7024.jpg", "filename": "IMG_7024.jpg", "size": "M", "sku": "LOYAL T-MICRO ONDESBLACKM"}, {"path": "isaac%20sellam/IMG_7045.jpg", "filename": "IMG_7045.jpg", "size": "XL", "sku": "LOYAL T-MICRO ONDESBLACKXL"}, {"path": "isaac%20sellam/IMG_7074.jpg", "filename": "IMG_7074.jpg", "size": "L", "sku": "LOYAL T-MICRO ONDESBLACKL"}], "skuBase": "LOYAL T-MICRO ONDESBLACK"}, {"styleCode": "LOYAL T-MICRO ONDES", "color": "SILVER", "description": "", "price": 225.0, "sizes": {"M": 1, "XL": 1, "L": 1}, "total": 3, "photos": [{"path": "isaac%20sellam/IMG_7022.jpg", "filename": "IMG_7022.jpg", "size": "M", "sku": "LOYAL T-MICRO ONDESSILVERM"}, {"path": "isaac%20sellam/IMG_7049.jpg", "filename": "IMG_7049.jpg", "size": "XL", "sku": "LOYAL T-MICRO ONDESSILVERXL"}, {"path": "isaac%20sellam/IMG_7067.jpg", "filename": "IMG_7067.jpg", "size": "L", "sku": "LOYAL T-MICRO ONDESSILVERL"}], "skuBase": "LOYAL T-MICRO ONDESSILVER"}, {"styleCode": "LOYAL T-MICRO ONDES", "color": "WHITE", "description": "", "price": 225.0, "sizes": {"M": 1, "XL": 1, "L": 1}, "total": 3, "photos": [{"path": "isaac%20sellam/IMG_7023.jpg", "filename": "IMG_7023.jpg", "size": "M", "sku": "LOYAL T-MICRO ONDESWHM"}, {"path": "isaac%20sellam/IMG_7042.jpg", "filename": "IMG_7042.jpg", "size": "XL", "sku": "LOYAL T-MICRO ONDESWHXL"}, {"path": "isaac%20sellam/IMG_7070.jpg", "filename": "IMG_7070.jpg", "size": "L", "sku": "LOYAL T-MICRO ONDESWHL"}], "skuBase": "LOYAL T-MICRO ONDESWH"}, {"styleCode": "MOVMENT LST JERSEY H2", "color": "BLACK", "description": "ISAAC SELLAM", "price": 165.0, "sizes": {"M": 2, "L": 1, "S": 1}, "total": 4, "photos": [{"path": "isaac%20sellam/IMG_6999.jpg", "filename": "IMG_6999.jpg", "size": "M", "sku": "MOVMENT LST JERSEY H25BLACKM"}, {"path": "isaac%20sellam/IMG_7003.jpg", "filename": "IMG_7003.jpg", "size": "L", "sku": "MOVMENT LST JERSEY H25BLACKL"}, {"path": "isaac%20sellam/IMG_7005.jpg", "filename": "IMG_7005.jpg", "size": "S", "sku": "MOVMENT LST JERSEY H25BLACKS"}, {"path": "isaac%20sellam/IMG_7006.jpg", "filename": "IMG_7006.jpg", "size": "M", "sku": "MOVMENT LST JERSEY H25BLACKM"}], "skuBase": "MOVMENT LST JERSEY H25BLACK"}, {"styleCode": "MOVMENT LST JERSEY H25", "color": "BLACK", "description": "ISAAC SELLAM", "price": 165.0, "sizes": {"XXL": 1, "XL": 2, "L": 1}, "total": 4, "photos": [{"path": "isaac%20sellam/IMG_6987.jpg", "filename": "IMG_6987.jpg", "size": "XXL", "sku": "MOVMENT LST JERSEY H25BLACKXXL"}, {"path": "isaac%20sellam/IMG_6990.jpg", "filename": "IMG_6990.jpg", "size": "XL", "sku": "MOVMENT LST JERSEY H25BLACKXL"}, {"path": "isaac%20sellam/IMG_6994.jpg", "filename": "IMG_6994.jpg", "size": "XL", "sku": "MOVMENT LST JERSEY H25BLACKXL"}, {"path": "isaac%20sellam/IMG_7056.jpg", "filename": "IMG_7056.jpg", "size": "L", "sku": "MOVMENT LST JERSEY H25BLACKL"}], "skuBase": "MOVMENT LST JERSEY H25BLACK"}, {"styleCode": "MOVMENT LST JERSEY H25", "color": "SILVER", "description": "ISAAC SELLAM", "price": 165.0, "sizes": {"XL": 1}, "total": 1, "photos": [{"path": "isaac%20sellam/IMG_6989.jpg", "filename": "IMG_6989.jpg", "size": "XL", "sku": "MOVMENT LST JERSEY H25SILVERXL"}], "skuBase": "MOVMENT LST JERSEY H25SILVER"}, {"styleCode": "MOVMENT T-JERSEY", "color": "SILVER", "description": "", "price": 137.2, "sizes": {"M": 1}, "total": 1, "photos": [{"path": "isaac%20sellam/IMG_7011.jpg", "filename": "IMG_7011.jpg", "size": "M", "sku": "MOVMENT T-JERSEYSILVERM"}], "skuBase": "MOVMENT T-JERSEYSILVER"}, {"styleCode": "MOVMENT T-JERSEY", "color": "WHITE", "description": "", "price": 137.2, "sizes": {"S": 1}, "total": 1, "photos": [{"path": "isaac%20sellam/IMG_7083.jpg", "filename": "IMG_7083.jpg", "size": "S", "sku": "MOVMENT T-JERSEYWHS"}], "skuBase": "MOVMENT T-JERSEYWH"}, {"styleCode": "NEW SHORT PANTS-GAUFRE", "color": "BLACK", "description": "SHORTS", "price": 501.2, "sizes": {"L": 1, "M": 1, "S": 1, "XL": 1}, "total": 4, "photos": [{"path": "isaac%20sellam/IMG_6982.jpg", "filename": "IMG_6982.jpg", "size": "L", "sku": "NEW SHORT PANTS-GAUFREBLACKL"}, {"path": "isaac%20sellam/IMG_6984.jpg", "filename": "IMG_6984.jpg", "size": "M", "sku": "NEW SHORT PANTS-GAUFREBLACKM"}, {"path": "isaac%20sellam/IMG_6985.jpg", "filename": "IMG_6985.jpg", "size": "S", "sku": "NEW SHORT PANTS-GAUFREBLACKS"}, {"path": "isaac%20sellam/IMG_7064.jpg", "filename": "IMG_7064.jpg", "size": "XL", "sku": "NEW SHORT PANTS-GAUFREBLACKXL"}], "skuBase": "NEW SHORT PANTS-GAUFREBLACK"}, {"styleCode": "NEW SHORT PANTS-GAUFRE", "color": "GREY", "description": "SHORTS", "price": 501.2, "sizes": {"XL": 1}, "total": 1, "photos": [{"path": "isaac%20sellam/IMG_7063.jpg", "filename": "IMG_7063.jpg", "size": "XL", "sku": "NEW SHORT PANTS-GAUFREGREYXL"}], "skuBase": "NEW SHORT PANTS-GAUFREGREY"}, {"styleCode": "NEW SHORT PANTS-GAUFRE", "color": "WHITE", "description": "SHORTS", "price": 501.2, "sizes": {"XL": 1}, "total": 1, "photos": [{"path": "isaac%20sellam/IMG_6981.jpg", "filename": "IMG_6981.jpg", "size": "XL", "sku": "NEW SHORT PANTS-GAUFREWHXL"}], "skuBase": "NEW SHORT PANTS-GAUFREWH"}, {"styleCode": "NEWSHORT-GAUFRE", "color": "BLACK", "description": "SHORTS", "price": 389.2, "sizes": {"M": 1, "L": 1, "XL": 1}, "total": 3, "photos": [{"path": "isaac%20sellam/IMG_7009.jpg", "filename": "IMG_7009.jpg", "size": "M", "sku": "NEWSHORT-GAUFREBLACKM"}, {"path": "isaac%20sellam/IMG_7017.jpg", "filename": "IMG_7017.jpg", "size": "L", "sku": "NEWSHORT-GAUFREBLACKL"}, {"path": "isaac%20sellam/IMG_7019.jpg", "filename": "IMG_7019.jpg", "size": "XL", "sku": "NEWSHORT-GAUFREBLACKXL"}], "skuBase": "NEWSHORT-GAUFREBLACK"}, {"styleCode": "NEWSHORT-GAUFRE", "color": "GREY", "description": "SHORTS", "price": 389.2, "sizes": {"M": 1, "XL": 1}, "total": 2, "photos": [{"path": "isaac%20sellam/IMG_7008.jpg", "filename": "IMG_7008.jpg", "size": "M", "sku": "NEWSHORT-GAUFREGREYM"}, {"path": "isaac%20sellam/IMG_7018.jpg", "filename": "IMG_7018.jpg", "size": "XL", "sku": "NEWSHORT-GAUFREGREYXL"}], "skuBase": "NEWSHORT-GAUFREGREY"}, {"styleCode": "NEWSHORT-SERGE", "color": "WHITE", "description": "JERSEY", "price": 389.2, "sizes": {"M": 1, "XL": 1}, "total": 2, "photos": [{"path": "isaac%20sellam/IMG_7007.jpg", "filename": "IMG_7007.jpg", "size": "M", "sku": "NEWSHORT-SERGEWHM"}, {"path": "isaac%20sellam/IMG_7020.jpg", "filename": "IMG_7020.jpg", "size": "XL", "sku": "NEWSHORT-SERGEWHXL"}], "skuBase": "NEWSHORT-SERGEWH"}, {"styleCode": "NOUVEAU T-JERSEY", "color": "SILVER", "description": "", "price": 137.2, "sizes": {"S": 1, "M": 1}, "total": 2, "photos": [{"path": "isaac%20sellam/IMG_7012.jpg", "filename": "IMG_7012.jpg", "size": "S", "sku": "NOUVEAU T-JERSEYSILVERS"}, {"path": "isaac%20sellam/IMG_7082.jpg", "filename": "IMG_7082.jpg", "size": "M", "sku": "NOUVEAU T-JERSEYSILVERM"}], "skuBase": "NOUVEAU T-JERSEYSILVER"}, {"styleCode": "PA CH KA KHAKI", "color": "KHAKI", "description": "LEATHER BAG ISAAC SALLAM", "price": 532.0, "sizes": {"OS": 1}, "total": 1, "photos": [{"path": "isaac%20sellam/IMG_7050.jpg", "filename": "IMG_7050.jpg", "size": "OS", "sku": "PA CH KAKHAKIOS"}], "skuBase": "PA CH KAKHAKI"}, {"styleCode": "ROYAL LST JERSEY H26", "color": "BLACK", "description": "ISAAC SELLAM", "price": 193.0, "sizes": {"XL": 2, "M": 2, "S": 1}, "total": 5, "photos": [{"path": "isaac%20sellam/IMG_6991.jpg", "filename": "IMG_6991.jpg", "size": "XL", "sku": "ROYAL LST JERSEY H26BLACKXL"}, {"path": "isaac%20sellam/IMG_6995.jpg", "filename": "IMG_6995.jpg", "size": "XL", "sku": "ROYAL LST JERSEY H26BLACKXL"}, {"path": "isaac%20sellam/IMG_6997.jpg", "filename": "IMG_6997.jpg", "size": "M", "sku": "ROYAL LST JERSEY H26BLACKM"}, {"path": "isaac%20sellam/IMG_6998.jpg", "filename": "IMG_6998.jpg", "size": "M", "sku": "ROYAL LST JERSEY H26BLACKM"}, {"path": "isaac%20sellam/IMG_7004.jpg", "filename": "IMG_7004.jpg", "size": "S", "sku": "ROYAL LST JERSEY H26BLACKS"}], "skuBase": "ROYAL LST JERSEY H26BLACK"}, {"styleCode": "ROYAL LST JERSEY H26", "color": "WH", "description": "ISAAC SELLAM", "price": 193.0, "sizes": {"M": 1}, "total": 1, "photos": [{"path": "isaac%20sellam/IMG_7002.jpg", "filename": "IMG_7002.jpg", "size": "M", "sku": "ROYAL LST JERSEY H26WHM"}], "skuBase": "ROYAL LST JERSEY H26WH"}, {"styleCode": "ROYAL LST JERSEY H26", "color": "WHITE", "description": "ISAAC SELLAM", "price": 193.0, "sizes": {"XL": 1, "XXL": 1}, "total": 2, "photos": [{"path": "isaac%20sellam/IMG_6993.jpg", "filename": "IMG_6993.jpg", "size": "XL", "sku": "ROYAL LST JERSEY H26WHXL"}, {"path": "isaac%20sellam/IMG_6996.jpg", "filename": "IMG_6996.jpg", "size": "XXL", "sku": "ROYAL LST JERSEY H26WHXXL"}], "skuBase": "ROYAL LST JERSEY H26WHX"}, {"styleCode": "SHORT-GAUFRE", "color": "BLACK", "description": "SHORT", "price": 333.2, "sizes": {"M": 1, "L": 1, "XL": 1}, "total": 3, "photos": [{"path": "isaac%20sellam/IMG_7010.jpg", "filename": "IMG_7010.jpg", "size": "M", "sku": "SHORT-GAUFREBLACKM"}, {"path": "isaac%20sellam/IMG_7015.jpg", "filename": "IMG_7015.jpg", "size": "L", "sku": "SHORT-GAUFREBLACKL"}, {"path": "isaac%20sellam/IMG_7021.jpg", "filename": "IMG_7021.jpg", "size": "XL", "sku": "SHORT-GAUFREBLACKXL"}], "skuBase": "SHORT-GAUFREBLACK"}, {"styleCode": "SHORTPANTS GAUFRE", "color": "BLACK", "description": "", "price": 389.2, "sizes": {"S": 1, "XL": 1, "L": 1}, "total": 3, "photos": [{"path": "isaac%20sellam/IMG_6986.jpg", "filename": "IMG_6986.jpg", "size": "S", "sku": "SHORTPANTS GAUFREBLACKS"}, {"path": "isaac%20sellam/IMG_7060.jpg", "filename": "IMG_7060.jpg", "size": "XL", "sku": "SHORTPANTS GAUFREBLACKXL"}, {"path": "isaac%20sellam/IMG_7062.jpg", "filename": "IMG_7062.jpg", "size": "L", "sku": "SHORTPANTS GAUFREBLACKL"}], "skuBase": "SHORTPANTS GAUFREBLACK"}, {"styleCode": "SHORTPANTS STRIPE", "color": "BLACK", "description": "", "price": 389.2, "sizes": {"XL": 1}, "total": 1, "photos": [{"path": "isaac%20sellam/IMG_7061.jpg", "filename": "IMG_7061.jpg", "size": "XL", "sku": "SHORTPANTS STRIPEBLACKXL"}], "skuBase": "SHORTPANTS STRIPEBLACK"}, {"styleCode": "W GA", "color": "GREY", "description": "ISAAC SELLAM", "price": 669.0, "sizes": {"XXL": 1, "XL": 1, "M": 1}, "total": 3, "photos": [{"path": "isaac%20sellam/IMG_6974.jpg", "filename": "IMG_6974.jpg", "size": "XXL", "sku": "W GAGREYXXL"}, {"path": "isaac%20sellam/IMG_6975.jpg", "filename": "IMG_6975.jpg", "size": "XL", "sku": "W GAGREYXL"}, {"path": "isaac%20sellam/IMG_6978.jpg", "filename": "IMG_6978.jpg", "size": "M", "sku": "W GAGREYM"}], "skuBase": "W GAGREY"}, {"styleCode": "W GAN", "color": "BLACK", "description": "ISAAC SELLAM", "price": 669.0, "sizes": {"XL": 1, "L": 1}, "total": 2, "photos": [{"path": "isaac%20sellam/IMG_6973.jpg", "filename": "IMG_6973.jpg", "size": "XL", "sku": "W GANBLACKXL"}, {"path": "isaac%20sellam/IMG_7052.jpg", "filename": "IMG_7052.jpg", "size": "L", "sku": "W GANBLACKL"}], "skuBase": "W GANBLACK"}, {"styleCode": "ZI ARN", "color": "BLACK", "description": "ISAAC SELLAM", "price": 669.0, "sizes": {"L": 1}, "total": 1, "photos": [{"path": "isaac%20sellam/IMG_7051.jpg", "filename": "IMG_7051.jpg", "size": "L", "sku": "ZI ARNBLACKL"}], "skuBase": "ZI ARNBLACK"}], "sizes": ["S", "M", "L", "XL", "XXL", "OS"], "stats": {"totalUnits": 108, "uniqueRows": 47, "topColor": "BLACK", "mostExpensive": "G ARN · BLACK", "mostExpensivePrice": 781, "totalPhotos": 110}, "reviewNeeded": [{"filename": "IMG_6972.jpg", "path": "isaac%20sellam/IMG_6972.jpg", "reason": "SKU appears to read NE ARNBLACKS but style shows BL GAN; possible mismatch on sticker", "folder_label": "isaac sellam"}, {"filename": "IMG_7053.jpg", "path": "isaac%20sellam/IMG_7053.jpg", "reason": "SKU shown as NE ARNBLACKL but style code reads BL GAN - mismatch on label", "folder_label": "isaac sellam"}, {"filename": "IMG_7057.jpg", "path": "isaac%20sellam/IMG_7057.jpg", "reason": "missing color, color not visible on sticker; SKU ends WHL suggesting WHITE", "folder_label": "isaac sellam"}, {"filename": "IMG_7059.jpg", "path": "isaac%20sellam/IMG_7059.jpg", "reason": "missing color, color not visible separately; SKU ends BLACKM but size shown as L", "folder_label": "isaac sellam"}]}, "Aito": {"stockMatrix": [{"styleCode": "AITO-MP", "color": "BLACK", "description": "TAPERED PANTS BLACK", "price": 285.0, "sizes": {"XL": 1, "XXL": 1, "M": 1}, "total": 3, "photos": [{"path": "Aito/IMG_7191.jpg", "filename": "IMG_7191.jpg", "size": "XL", "sku": "AITO-MPBLACKXL"}, {"path": "Aito/IMG_7197.jpg", "filename": "IMG_7197.jpg", "size": "XXL", "sku": "AITO-MPBLACKXXL"}, {"path": "Aito/IMG_7198.jpg", "filename": "IMG_7198.jpg", "size": "M", "sku": "AITO-MPBLACKM"}], "skuBase": "AITO-MPBLACK"}, {"styleCode": "AITO051N", "color": "BEIGE", "description": "TANK", "price": 125.0, "sizes": {"4": 1, "5": 2, "1": 2, "2": 1}, "total": 6, "photos": [{"path": "Aito/IMG_7131.jpg", "filename": "IMG_7131.jpg", "size": "4", "sku": "AITO051NBG4"}, {"path": "Aito/IMG_7144.jpg", "filename": "IMG_7144.jpg", "size": "5", "sku": "AITO051NBG5"}, {"path": "Aito/IMG_7146.jpg", "filename": "IMG_7146.jpg", "size": "5", "sku": "AITO051NBG5"}, {"path": "Aito/IMG_7157.jpg", "filename": "IMG_7157.jpg", "size": "1", "sku": "AITO051NBG1"}, {"path": "Aito/IMG_7158.jpg", "filename": "IMG_7158.jpg", "size": "1", "sku": "AITO051NBG1"}, {"path": "Aito/IMG_7175.jpg", "filename": "IMG_7175.jpg", "size": "2", "sku": "AITO051NBG2"}], "skuBase": "AITO051NBG"}, {"styleCode": "AITO051N", "color": "BLACK", "description": "TANK", "price": 125.0, "sizes": {"1": 1}, "total": 1, "photos": [{"path": "Aito/IMG_7164.jpg", "filename": "IMG_7164.jpg", "size": "1", "sku": "AITO051NBLACK1"}], "skuBase": "AITO051NBLACK"}, {"styleCode": "AITO051N", "color": "LIGHT", "description": "TANK", "price": 125.0, "sizes": {"4": 1, "1": 1, "2": 1, "3": 2}, "total": 5, "photos": [{"path": "Aito/IMG_7134.jpg", "filename": "IMG_7134.jpg", "size": "4", "sku": "AITO051NLIGHT4"}, {"path": "Aito/IMG_7155.jpg", "filename": "IMG_7155.jpg", "size": "1", "sku": "AITO051NLIGHT1"}, {"path": "Aito/IMG_7178.jpg", "filename": "IMG_7178.jpg", "size": "2", "sku": "AITO051NLIGHT2"}, {"path": "Aito/IMG_7183.jpg", "filename": "IMG_7183.jpg", "size": "3", "sku": "AITO051NLIGHT3"}, {"path": "Aito/IMG_7184.jpg", "filename": "IMG_7184.jpg", "size": "3", "sku": "AITO051NLIGHT3"}], "skuBase": "AITO051NLIGHT"}, {"styleCode": "AITO051N", "color": "MOKA", "description": "TANK", "price": 125.0, "sizes": {"4": 1, "5": 1, "1": 2, "2": 2}, "total": 6, "photos": [{"path": "Aito/IMG_7130.jpg", "filename": "IMG_7130.jpg", "size": "4", "sku": "AITO051NMK4"}, {"path": "Aito/IMG_7145.jpg", "filename": "IMG_7145.jpg", "size": "5", "sku": "AITO051NMK5"}, {"path": "Aito/IMG_7156.jpg", "filename": "IMG_7156.jpg", "size": "1", "sku": "AITO051NMK1"}, {"path": "Aito/IMG_7159.jpg", "filename": "IMG_7159.jpg", "size": "1", "sku": "AITO051NMK1"}, {"path": "Aito/IMG_7174.jpg", "filename": "IMG_7174.jpg", "size": "2", "sku": "AITO051NMK2"}, {"path": "Aito/IMG_7177.jpg", "filename": "IMG_7177.jpg", "size": "2", "sku": "AITO051NMK2"}], "skuBase": "AITO051NMK"}, {"styleCode": "AITO051N", "color": "WHITE", "description": "TANK", "price": 125.0, "sizes": {"4": 1, "1": 1}, "total": 2, "photos": [{"path": "Aito/IMG_7133.jpg", "filename": "IMG_7133.jpg", "size": "4", "sku": "AITO051NWH4"}, {"path": "Aito/IMG_7165.jpg", "filename": "IMG_7165.jpg", "size": "1", "sku": "AITO051NWH1"}], "skuBase": "AITO051NWH"}, {"styleCode": "AITO056", "color": "OFF WHITE", "description": "LONG JACKET", "price": 590.0, "sizes": {"XXL": 1, "M": 1}, "total": 2, "photos": [{"path": "Aito/IMG_7101.jpg", "filename": "IMG_7101.jpg", "size": "XXL", "sku": "AITO056OFFWHXXL"}, {"path": "Aito/IMG_7102.jpg", "filename": "IMG_7102.jpg", "size": "M", "sku": "AITO056OFFWHM"}], "skuBase": "AITO056OFFWH"}, {"styleCode": "AITO056", "color": "TABACO", "description": "LONG JACKET", "price": 590.0, "sizes": {"M": 1, "XL": 1, "XXL": 1, "L": 1}, "total": 4, "photos": [{"path": "Aito/IMG_7103.jpg", "filename": "IMG_7103.jpg", "size": "M", "sku": "AITO056TABAM"}, {"path": "Aito/IMG_7104.jpg", "filename": "IMG_7104.jpg", "size": "XL", "sku": "AITO056TABAXL"}, {"path": "Aito/IMG_7105.jpg", "filename": "IMG_7105.jpg", "size": "XXL", "sku": "AITO056TABAXXL"}, {"path": "Aito/IMG_7190.jpg", "filename": "IMG_7190.jpg", "size": "L", "sku": "AITO056TABAL"}], "skuBase": "AITO056TABA"}, {"styleCode": "AITO062", "color": "CHARCOAL", "description": "SHORTS", "price": 190.0, "sizes": {"1": 1, "2": 2, "3": 2, "4": 1}, "total": 6, "photos": [{"path": "Aito/IMG_7106.jpg", "filename": "IMG_7106.jpg", "size": "1", "sku": "AITO062CHAR1"}, {"path": "Aito/IMG_7110.jpg", "filename": "IMG_7110.jpg", "size": "2", "sku": "AITO062CHAR2"}, {"path": "Aito/IMG_7111.jpg", "filename": "IMG_7111.jpg", "size": "2", "sku": "AITO062CHAR2"}, {"path": "Aito/IMG_7116.jpg", "filename": "IMG_7116.jpg", "size": "3", "sku": "AITO062CHAR3"}, {"path": "Aito/IMG_7118.jpg", "filename": "IMG_7118.jpg", "size": "3", "sku": "AITO062CHAR3"}, {"path": "Aito/IMG_7121.jpg", "filename": "IMG_7121.jpg", "size": "4", "sku": "AITO062CHAR4"}], "skuBase": "AITO062CHAR"}, {"styleCode": "AITO062", "color": "GREY", "description": "SHORTS", "price": 190.0, "sizes": {"1": 2, "2": 2, "3": 1, "4": 2, "5": 2}, "total": 9, "photos": [{"path": "Aito/IMG_7107.jpg", "filename": "IMG_7107.jpg", "size": "1", "sku": "AITO062GREY1"}, {"path": "Aito/IMG_7109.jpg", "filename": "IMG_7109.jpg", "size": "1", "sku": "AITO062GREY1"}, {"path": "Aito/IMG_7112.jpg", "filename": "IMG_7112.jpg", "size": "2", "sku": "AITO062GREY2"}, {"path": "Aito/IMG_7113.jpg", "filename": "IMG_7113.jpg", "size": "2", "sku": "AITO062GREY2"}, {"path": "Aito/IMG_7119.jpg", "filename": "IMG_7119.jpg", "size": "3", "sku": "AITO062GREY3"}, {"path": "Aito/IMG_7122.jpg", "filename": "IMG_7122.jpg", "size": "4", "sku": "AITO062GREY4"}, {"path": "Aito/IMG_7125.jpg", "filename": "IMG_7125.jpg", "size": "4", "sku": "AITO062GREY4"}, {"path": "Aito/IMG_7127.jpg", "filename": "IMG_7127.jpg", "size": "5", "sku": "AITO062GREY5"}, {"path": "Aito/IMG_7128.jpg", "filename": "IMG_7128.jpg", "size": "5", "sku": "AITO062GREY5"}], "skuBase": "AITO062GREY"}, {"styleCode": "AITO062", "color": "STONE", "description": "SHORTS", "price": 190.0, "sizes": {"1": 1, "2": 2, "3": 2, "4": 2, "5": 1}, "total": 8, "photos": [{"path": "Aito/IMG_7108.jpg", "filename": "IMG_7108.jpg", "size": "1", "sku": "AITO062STONE1"}, {"path": "Aito/IMG_7114.jpg", "filename": "IMG_7114.jpg", "size": "2", "sku": "AITO062STONE2"}, {"path": "Aito/IMG_7115.jpg", "filename": "IMG_7115.jpg", "size": "2", "sku": "AITO062STONE2"}, {"path": "Aito/IMG_7117.jpg", "filename": "IMG_7117.jpg", "size": "3", "sku": "AITO062STONE3"}, {"path": "Aito/IMG_7120.jpg", "filename": "IMG_7120.jpg", "size": "3", "sku": "AITO062STONE3"}, {"path": "Aito/IMG_7123.jpg", "filename": "IMG_7123.jpg", "size": "4", "sku": "AITO062STONE4"}, {"path": "Aito/IMG_7124.jpg", "filename": "IMG_7124.jpg", "size": "4", "sku": "AITO062STONE4"}, {"path": "Aito/IMG_7126.jpg", "filename": "IMG_7126.jpg", "size": "5", "sku": "AITO062STONE5"}], "skuBase": "AITO062STONE"}, {"styleCode": "AITO522", "color": "MUSTARD", "description": "SHIRT SHORT SLEEVE", "price": 155.0, "sizes": {"5": 1, "2": 1, "3": 1}, "total": 3, "photos": [{"path": "Aito/IMG_7150.jpg", "filename": "IMG_7150.jpg", "size": "5", "sku": "AITO52MUSTARD5"}, {"path": "Aito/IMG_7172.jpg", "filename": "IMG_7172.jpg", "size": "2", "sku": "AITO522MUSTARD2"}, {"path": "Aito/IMG_7187.jpg", "filename": "IMG_7187.jpg", "size": "3", "sku": "AITO522MUSTARD3"}], "skuBase": "AITO52"}, {"styleCode": "AITO522N", "color": "BEIGE", "description": "TSHIRT", "price": 155.0, "sizes": {"5": 1, "1": 1, "2": 2, "3": 2}, "total": 6, "photos": [{"path": "Aito/IMG_7149.jpg", "filename": "IMG_7149.jpg", "size": "5", "sku": "AITO522NBG5"}, {"path": "Aito/IMG_7163.jpg", "filename": "IMG_7163.jpg", "size": "1", "sku": "AITO522NBG1"}, {"path": "Aito/IMG_7171.jpg", "filename": "IMG_7171.jpg", "size": "2", "sku": "AITO522NBG2"}, {"path": "Aito/IMG_7176.jpg", "filename": "IMG_7176.jpg", "size": "2", "sku": "AITO522NBG2"}, {"path": "Aito/IMG_7185.jpg", "filename": "IMG_7185.jpg", "size": "3", "sku": "AITO522NBG3"}, {"path": "Aito/IMG_7186.jpg", "filename": "IMG_7186.jpg", "size": "3", "sku": "AITO522NBG3"}], "skuBase": "AITO522NBG"}, {"styleCode": "AITO522N", "color": "BLACK", "description": "TSHIRT", "price": 155.0, "sizes": {"5": 1, "1": 1}, "total": 2, "photos": [{"path": "Aito/IMG_7141.jpg", "filename": "IMG_7141.jpg", "size": "5", "sku": "AITO522NBLACK5"}, {"path": "Aito/IMG_7152.jpg", "filename": "IMG_7152.jpg", "size": "1", "sku": "AITO522NBLACK1"}], "skuBase": "AITO522NBLACK"}, {"styleCode": "AITO522N", "color": "LIGHT", "description": "TSHIRT", "price": 155.0, "sizes": {"5": 1, "1": 2}, "total": 3, "photos": [{"path": "Aito/IMG_7142.jpg", "filename": "IMG_7142.jpg", "size": "5", "sku": "AITO522NLIGHT5"}, {"path": "Aito/IMG_7153.jpg", "filename": "IMG_7153.jpg", "size": "1", "sku": "AITO522NLIGHT1"}, {"path": "Aito/IMG_7161.jpg", "filename": "IMG_7161.jpg", "size": "1", "sku": "AITO522NLIGHT1"}], "skuBase": "AITO522NLIGHT"}, {"styleCode": "AITO522N", "color": "MOKA", "description": "TSHIRT", "price": 155.0, "sizes": {"4": 1, "5": 2, "1": 2, "2": 1}, "total": 6, "photos": [{"path": "Aito/IMG_7129.jpg", "filename": "IMG_7129.jpg", "size": "4", "sku": "AITO522NMK4"}, {"path": "Aito/IMG_7147.jpg", "filename": "IMG_7147.jpg", "size": "5", "sku": "AITO522NMK5"}, {"path": "Aito/IMG_7148.jpg", "filename": "IMG_7148.jpg", "size": "5", "sku": "AITO522NMK5"}, {"path": "Aito/IMG_7162.jpg", "filename": "IMG_7162.jpg", "size": "1", "sku": "AITO522NMK1"}, {"path": "Aito/IMG_7166.jpg", "filename": "IMG_7166.jpg", "size": "1", "sku": "AITO522NMK1"}, {"path": "Aito/IMG_7173.jpg", "filename": "IMG_7173.jpg", "size": "2", "sku": "AITO522NMK2"}], "skuBase": "AITO522NMK"}, {"styleCode": "AITO522N", "color": "MUSTARD", "description": "SHIRT LONG SLEEVE", "price": 155.0, "sizes": {"4": 1, "1": 1}, "total": 2, "photos": [{"path": "Aito/IMG_7135.jpg", "filename": "IMG_7135.jpg", "size": "4", "sku": "AITO522NMUSTARD4"}, {"path": "Aito/IMG_7160.jpg", "filename": "IMG_7160.jpg", "size": "1", "sku": "AITO522NMUSTARD1"}], "skuBase": "AITO522NMUSTARD"}, {"styleCode": "AITO522N", "color": "WHITE", "description": "TSHIRT", "price": 155.0, "sizes": {"1": 1}, "total": 1, "photos": [{"path": "Aito/IMG_7154.jpg", "filename": "IMG_7154.jpg", "size": "1", "sku": "AITO522NWH1"}], "skuBase": "AITO522NWH"}, {"styleCode": "AITO523", "color": "BLACK", "description": "Shirt cotton 100%", "price": 280.0, "sizes": {"S": 1, "M": 1, "XXL": 1, "XL": 1}, "total": 4, "photos": [{"path": "Aito/IMG_7088.jpg", "filename": "IMG_7088.jpg", "size": "S", "sku": "AITO523BLACKS"}, {"path": "Aito/IMG_7089.jpg", "filename": "IMG_7089.jpg", "size": "M", "sku": "AITO523BLACKM"}, {"path": "Aito/IMG_7094.jpg", "filename": "IMG_7094.jpg", "size": "XXL", "sku": "AITO523BLACKXXL"}, {"path": "Aito/IMG_7188.jpg", "filename": "IMG_7188.jpg", "size": "XL", "sku": "AITO523BLACKXL"}], "skuBase": "AITO523BLACK"}, {"styleCode": "AITO523", "color": "WHITE", "description": "Shirt cotton 100%", "price": 280.0, "sizes": {"M": 1, "S": 1, "XL": 1}, "total": 3, "photos": [{"path": "Aito/IMG_7098.jpg", "filename": "IMG_7098.jpg", "size": "M", "sku": "AITO523WHM"}, {"path": "Aito/IMG_7099.jpg", "filename": "IMG_7099.jpg", "size": "S", "sku": "AITO523WHS"}, {"path": "Aito/IMG_7100.jpg", "filename": "IMG_7100.jpg", "size": "XL", "sku": "AITO523WHXL"}], "skuBase": "AITO523WH"}, {"styleCode": "AITO523", "color": "natural", "description": "Shirt cotton 100%", "price": 280.0, "sizes": {"XXL": 1, "S": 1, "XL": 1}, "total": 3, "photos": [{"path": "Aito/IMG_7095.jpg", "filename": "IMG_7095.jpg", "size": "XXL", "sku": "AITO523naturalXXL"}, {"path": "Aito/IMG_7096.jpg", "filename": "IMG_7096.jpg", "size": "S", "sku": "AITO523naturalS"}, {"path": "Aito/IMG_7097.jpg", "filename": "IMG_7097.jpg", "size": "XL", "sku": "AITO523naturalXL"}], "skuBase": "AITO523natural"}, {"styleCode": "AITO524", "color": "BLACK", "description": "synthetic silk", "price": 350.0, "sizes": {"XXL": 1, "M": 1, "L": 1}, "total": 3, "photos": [{"path": "Aito/IMG_7087.jpg", "filename": "IMG_7087.jpg", "size": "XXL", "sku": "AITO524BLACKXXL"}, {"path": "Aito/IMG_7093.jpg", "filename": "IMG_7093.jpg", "size": "M", "sku": "AITO524BLACKM"}, {"path": "Aito/IMG_7189.jpg", "filename": "IMG_7189.jpg", "size": "L", "sku": "AITO524BLACKL"}], "skuBase": "AITO524BLACK"}, {"styleCode": "AITO524", "color": "GREY", "description": "synthetic silk", "price": 350.0, "sizes": {"L": 1, "S": 1, "XXL": 1}, "total": 3, "photos": [{"path": "Aito/IMG_7090.jpg", "filename": "IMG_7090.jpg", "size": "L", "sku": "AITO524GREYL"}, {"path": "Aito/IMG_7091.jpg", "filename": "IMG_7091.jpg", "size": "S", "sku": "AITO524GREYS"}, {"path": "Aito/IMG_7092.jpg", "filename": "IMG_7092.jpg", "size": "XXL", "sku": "AITO524GREYXXL"}], "skuBase": "AITO524GREY"}, {"styleCode": "AITO553-2", "color": "BLACK", "description": "T-SHIRT BLACK", "price": 165.0, "sizes": {"XL": 1, "XXL": 1, "S": 1, "M": 1}, "total": 4, "photos": [{"path": "Aito/IMG_7137.jpg", "filename": "IMG_7137.jpg", "size": "XL", "sku": "AITO553-2BLACKXL"}, {"path": "Aito/IMG_7143.jpg", "filename": "IMG_7143.jpg", "size": "XXL", "sku": "AITO553-2BLACKXXL"}, {"path": "Aito/IMG_7170.jpg", "filename": "IMG_7170.jpg", "size": "S", "sku": "AITO553-2BLACKS"}, {"path": "Aito/IMG_7180.jpg", "filename": "IMG_7180.jpg", "size": "M", "sku": "AITO553-2BLACKM"}], "skuBase": "AITO553-2BLACK"}, {"styleCode": "AITO553-2", "color": "CHARCOAL", "description": "T-SHIRT CHARCOAL", "price": 165.0, "sizes": {"XXL": 1, "S": 1, "M": 1}, "total": 3, "photos": [{"path": "Aito/IMG_7151.jpg", "filename": "IMG_7151.jpg", "size": "XXL", "sku": "AITO553-2CHARXXL"}, {"path": "Aito/IMG_7168.jpg", "filename": "IMG_7168.jpg", "size": "S", "sku": "AITO553-2CHARS"}, {"path": "Aito/IMG_7181.jpg", "filename": "IMG_7181.jpg", "size": "M", "sku": "AITO553-2CHARM"}], "skuBase": "AITO553-2CHAR"}, {"styleCode": "AITO553-2", "color": "STONE", "description": "T-SHIRT STONE", "price": 165.0, "sizes": {"XL": 1, "XXL": 1, "S": 1, "M": 1}, "total": 4, "photos": [{"path": "Aito/IMG_7138.jpg", "filename": "IMG_7138.jpg", "size": "XL", "sku": "AITO553-2STONEXL"}, {"path": "Aito/IMG_7139.jpg", "filename": "IMG_7139.jpg", "size": "XXL", "sku": "AITO553-2STONEXXL"}, {"path": "Aito/IMG_7167.jpg", "filename": "IMG_7167.jpg", "size": "S", "sku": "AITO553-2STONES"}, {"path": "Aito/IMG_7179.jpg", "filename": "IMG_7179.jpg", "size": "M", "sku": "AITO553-2STONEM"}], "skuBase": "AITO553-2STONE"}, {"styleCode": "AITO553-2", "color": "WHITE", "description": "T-SHIRT WHITE", "price": 165.0, "sizes": {"XL": 1, "XXL": 1, "S": 1, "M": 1}, "total": 4, "photos": [{"path": "Aito/IMG_7136.jpg", "filename": "IMG_7136.jpg", "size": "XL", "sku": "AITO553-2WHXL"}, {"path": "Aito/IMG_7140.jpg", "filename": "IMG_7140.jpg", "size": "XXL", "sku": "AITO553-2WHXXL"}, {"path": "Aito/IMG_7169.jpg", "filename": "IMG_7169.jpg", "size": "S", "sku": "AITO553-2WHS"}, {"path": "Aito/IMG_7182.jpg", "filename": "IMG_7182.jpg", "size": "M", "sku": "AITO553-2WHM"}], "skuBase": "AITO553-2WH"}, {"styleCode": "AITOPRIMO", "color": "BLACK", "description": "Drop-Crotch Pants BLACK", "price": 325.0, "sizes": {"M": 1, "L": 1, "S": 1, "XL": 1, "XXL": 1}, "total": 5, "photos": [{"path": "Aito/IMG_7192.jpg", "filename": "IMG_7192.jpg", "size": "M", "sku": "AITOPRIMOBLACKM"}, {"path": "Aito/IMG_7193.jpg", "filename": "IMG_7193.jpg", "size": "L", "sku": "AITOPRIMOBLACKL"}, {"path": "Aito/IMG_7194.jpg", "filename": "IMG_7194.jpg", "size": "S", "sku": "AITOPRIMOBLACKS"}, {"path": "Aito/IMG_7195.jpg", "filename": "IMG_7195.jpg", "size": "XL", "sku": "AITOPRIMOBLACKXL"}, {"path": "Aito/IMG_7196.jpg", "filename": "IMG_7196.jpg", "size": "XXL", "sku": "AITOPRIMOBLACKXXL"}], "skuBase": "AITOPRIMOBLACK"}], "sizes": ["S", "M", "L", "XL", "XXL", "1", "2", "3", "4", "5"], "stats": {"totalUnits": 111, "uniqueRows": 28, "topColor": "BLACK", "mostExpensive": "AITO056 · OFF WHITE", "mostExpensivePrice": 590, "totalPhotos": 111}, "reviewNeeded": []}}};
+const STATE = {
+  brand: null,
+  search: "",
+  sizeFilter: null,
+  expandedRow: null,
+  expandedStyle: null,
+  grouped: false,
+  editMode: false,
+  updates: {},  // { "<brand>::<style>::<color>::<size>": newQty }
+  lightbox: { photos: [], index: 0 },
+};
+
+const STORAGE_KEY = "inventory-updates-v1";
+
+function loadUpdates() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      STATE.updates = JSON.parse(raw);
+    }
+  } catch (e) {
+    console.warn("Could not load updates from localStorage", e);
+    STATE.updates = {};
+  }
+}
+
+let _saveTimer = null;
+function saveUpdates() {
+  if (_saveTimer) clearTimeout(_saveTimer);
+  _saveTimer = setTimeout(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(STATE.updates));
+    } catch (e) {
+      console.warn("Could not save updates", e);
+    }
+  }, 300);
+}
+
+function updateKey(brand, styleCode, color, size) {
+  return `${brand}::${styleCode}::${color}::${size}`;
+}
+
+function getEffectiveQty(brand, styleCode, color, size, originalQty) {
+  const k = updateKey(brand, styleCode, color, size);
+  return Object.prototype.hasOwnProperty.call(STATE.updates, k)
+    ? STATE.updates[k]
+    : originalQty;
+}
+
+function isModified(brand, styleCode, color, size) {
+  return Object.prototype.hasOwnProperty.call(
+    STATE.updates,
+    updateKey(brand, styleCode, color, size)
+  );
+}
+
+function rowEffectiveTotal(brand, row) {
+  let total = 0;
+  Object.entries(row.sizes).forEach(([s, q]) => {
+    total += getEffectiveQty(brand, row.styleCode, row.color, s, q);
+  });
+  // Sizes that were originally 0 might have been added (qty>0 now)
+  const allSizes = currentBrand().sizes;
+  allSizes.forEach(s => {
+    if (!row.sizes[s]) {
+      const eff = getEffectiveQty(brand, row.styleCode, row.color, s, 0);
+      total += eff;
+    }
+  });
+  return total;
+}
+
+function rowHasEdits(brand, row) {
+  if (rowOriginalTotal(row) !== rowEffectiveTotal(brand, row)) return true;
+  return currentBrand().sizes.some(s =>
+    isModified(brand, row.styleCode, row.color, s)
+  );
+}
+
+function rowOriginalTotal(row) {
+  return Object.values(row.sizes).reduce((a, b) => a + b, 0);
+}
+
+function setQty(brand, styleCode, color, size, originalQty, newQty) {
+  const n = Math.max(0, parseInt(newQty, 10) || 0);
+  const k = updateKey(brand, styleCode, color, size);
+  if (n === originalQty) {
+    delete STATE.updates[k];
+  } else {
+    STATE.updates[k] = n;
+  }
+  saveUpdates();
+  updateEditsCounter();
+}
+
+function countModifications() {
+  return Object.keys(STATE.updates).length;
+}
+
+function updateEditsCounter() {
+  const n = countModifications();
+  const dlBtn = document.getElementById("download-btn");
+  const countEl = document.getElementById("updates-count");
+  const resetBtn = document.getElementById("reset-btn");
+  const summary = document.getElementById("edits-summary");
+  const summaryText = document.getElementById("edits-summary-text");
+  countEl.textContent = n;
+  dlBtn.disabled = n === 0;
+  resetBtn.style.display = n > 0 ? "" : "none";
+  if (n > 0) {
+    summary.classList.add("show");
+    summaryText.textContent = `${n} cell${n === 1 ? "" : "s"} modified`;
+  } else {
+    summary.classList.remove("show");
+  }
+}
+
+function toggleEditMode() {
+  STATE.editMode = !STATE.editMode;
+  document.body.classList.toggle("edit-mode", STATE.editMode);
+  document.getElementById("edit-toggle").classList.toggle("active", STATE.editMode);
+  renderMatrix();
+}
+
+function startEditCell(brand, styleCode, color, size, originalQty, td) {
+  if (!STATE.editMode) return;
+  const currentQty = getEffectiveQty(brand, styleCode, color, size, originalQty);
+  const input = document.createElement("input");
+  input.type = "number";
+  input.min = "0";
+  input.step = "1";
+  input.value = currentQty || 0;
+  input.className = "qty-input";
+  td.innerHTML = "";
+  td.appendChild(input);
+  input.focus();
+  input.select();
+
+  let cancelled = false;
+  const commit = () => {
+    if (cancelled) return;
+    const n = parseInt(input.value, 10);
+    if (!isNaN(n) && n >= 0) {
+      setQty(brand, styleCode, color, size, originalQty, n);
+    }
+    renderMatrix();
+  };
+  input.addEventListener("blur", commit);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      input.blur();
+    } else if (e.key === "Escape") {
+      cancelled = true;
+      renderMatrix();
+    }
+  });
+}
+
+function downloadUpdates() {
+  const n = countModifications();
+  if (n === 0) return;
+
+  const changes = {};
+  let totalDelta = 0;
+  let unitsLost = 0;
+  let unitsAdded = 0;
+
+  // Collect originals from DATA for context
+  for (const [key, newQty] of Object.entries(STATE.updates)) {
+    const [brand, style, color, size] = key.split("::");
+    if (!DATA.brands[brand]) continue;
+    const row = DATA.brands[brand].stockMatrix.find(
+      r => r.styleCode === style && r.color === color
+    );
+    const originalQty = (row && row.sizes[size]) || 0;
+    const delta = newQty - originalQty;
+    totalDelta += delta;
+    if (delta < 0) unitsLost += Math.abs(delta);
+    else unitsAdded += delta;
+
+    if (!changes[brand]) changes[brand] = [];
+    changes[brand].push({
+      sku_base: row ? row.skuBase : "",
+      style_code: style,
+      color: color,
+      size: size,
+      original_qty: originalQty,
+      new_qty: newQty,
+      delta: delta,
+    });
+  }
+
+  const payload = {
+    exported_at: new Date().toISOString(),
+    summary: {
+      total_changes: n,
+      units_lost: unitsLost,
+      units_added: unitsAdded,
+      net_delta: totalDelta,
+    },
+    brand_changes: changes,
+  };
+
+  const today = new Date().toISOString().slice(0, 10);
+  const filename = `inventory-updates-${today}.json`;
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+    a.remove();
+  }, 0);
+}
+
+function resetUpdates() {
+  const n = countModifications();
+  if (n === 0) return;
+  if (!confirm(`Discard your ${n} change${n === 1 ? "" : "s"}?\n\nThis cannot be undone.`)) return;
+  STATE.updates = {};
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+  updateEditsCounter();
+  renderMatrix();
+}
+
+function init() {
+  loadUpdates();
+  const brandNames = Object.keys(DATA.brands);
+  const tabsEl = document.getElementById("tabs");
+  brandNames.forEach((name, i) => {
+    const t = document.createElement("div");
+    t.className = "tab" + (i === 0 ? " active" : "");
+    t.textContent = name;
+    t.onclick = () => switchBrand(name);
+    tabsEl.appendChild(t);
+  });
+  switchBrand(brandNames[0]);
+  updateEditsCounter();
+
+  document.getElementById("search").addEventListener("input", e => {
+    STATE.search = e.target.value.toLowerCase();
+    renderMatrix();
+  });
+
+  document.addEventListener("keydown", e => {
+    if (document.getElementById("lightbox").classList.contains("open")) {
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") navLightbox(-1);
+      if (e.key === "ArrowRight") navLightbox(1);
+    }
+  });
+
+  document.getElementById("lightbox").addEventListener("click", e => {
+    if (e.target.id === "lightbox") closeLightbox();
+  });
+}
+
+function switchBrand(name) {
+  STATE.brand = name;
+  STATE.search = "";
+  STATE.sizeFilter = null;
+  STATE.expandedRow = null;
+  STATE.expandedStyle = null;
+  document.getElementById("search").value = "";
+  document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.textContent === name));
+  render();
+}
+
+function toggleGrouped() {
+  STATE.grouped = !STATE.grouped;
+  STATE.expandedStyle = null;
+  STATE.expandedRow = null;
+  document.getElementById("group-toggle").classList.toggle("active", STATE.grouped);
+  renderMatrix();
+}
+
+function currentBrand() { return DATA.brands[STATE.brand]; }
+
+function render() {
+  renderStats();
+  renderReview();
+  renderSizeChips();
+  renderIndexHeader();
+  renderMatrix();
+}
+
+function romanize(n) {
+  const map = [["X",10],["IX",9],["V",5],["IV",4],["I",1]];
+  let r = ""; let v = n;
+  for (const [s, val] of map) { while (v >= val) { r += s; v -= val; } }
+  return r;
+}
+
+function renderIndexHeader() {
+  const b = currentBrand();
+  const idx = Object.keys(DATA.brands).indexOf(STATE.brand) + 1;
+  document.getElementById("index-num").textContent = "№ " + romanize(idx);
+  document.getElementById("index-title").firstChild.textContent = STATE.brand;
+  document.getElementById("index-meta").textContent =
+    `${b.stockMatrix.length} entries · ${b.stats.totalUnits} units`;
+}
+
+function renderStats() {
+  const b = currentBrand();
+  const s = b.stats;
+  const priceTag = s.mostExpensivePrice ? `<span class="price-tag">${s.mostExpensivePrice}€</span>` : "";
+  // Effective total: original + delta from edits for this brand
+  let effectiveUnits = s.totalUnits;
+  for (const [key, newQty] of Object.entries(STATE.updates)) {
+    const [brand, style, color, size] = key.split("::");
+    if (brand !== STATE.brand) continue;
+    const row = b.stockMatrix.find(r => r.styleCode === style && r.color === color);
+    const orig = (row && row.sizes[size]) || 0;
+    effectiveUnits += (newQty - orig);
+  }
+  let unitsDisplay = `${s.totalUnits}`;
+  if (effectiveUnits !== s.totalUnits) {
+    const delta = effectiveUnits - s.totalUnits;
+    const sign = delta > 0 ? "+" : "−";
+    const absDelta = Math.abs(delta);
+    unitsDisplay = `${effectiveUnits} <span style="font-family:var(--mono);font-size:14px;color:var(--oxblood);font-weight:500;letter-spacing:0.06em;">(${s.totalUnits} ${sign} ${absDelta})</span>`;
+  }
+  document.getElementById("stats").innerHTML = `
+    <div class="stat">
+      <div class="label">Units in stock</div>
+      <div class="value">${unitsDisplay}</div>
+    </div>
+    <div class="stat">
+      <div class="label">Style + Color</div>
+      <div class="value">${s.uniqueRows}</div>
+    </div>
+    <div class="stat">
+      <div class="label">Top color</div>
+      <div class="value">${escapeHtml(s.topColor || "—")}</div>
+    </div>
+    <div class="stat text">
+      <div class="label">Highest priced</div>
+      <div class="value">${escapeHtml(s.mostExpensive)}${priceTag}</div>
+    </div>
+    <div class="stat">
+      <div class="label">Photos archived</div>
+      <div class="value">${s.totalPhotos}</div>
+    </div>
+  `;
+}
+
+function renderReview() {
+  const b = currentBrand();
+  const banner = document.getElementById("review-banner");
+  const section = document.getElementById("review-section");
+  if (!b.reviewNeeded || b.reviewNeeded.length === 0) {
+    banner.classList.remove("show");
+    section.classList.remove("show");
+    return;
+  }
+  banner.classList.add("show");
+  document.getElementById("review-banner-text").textContent =
+    `${b.reviewNeeded.length} entr${b.reviewNeeded.length > 1 ? "ies" : "y"} pending review`;
+  section.classList.add("show");
+  document.getElementById("review-subtitle").textContent =
+    `Photographs flagged during data entry. Click each to inspect the original tag and verify by hand.`;
+  const list = document.getElementById("review-list");
+  list.innerHTML = "";
+  b.reviewNeeded.forEach((r, idx) => {
+    const item = document.createElement("li");
+    item.className = "review-item";
+    const folderLabel = r.folder_label ? `<span class="folder">${escapeHtml(r.folder_label)}</span>` : "";
+    item.innerHTML = `
+      <span class="num">${String(idx + 1).padStart(2, "0")}</span>
+      <span class="filename">${escapeHtml(r.filename)}${folderLabel}</span>
+      <span class="reason">${escapeHtml(r.reason)}</span>
+      <button class="view-btn" onclick="openReviewLightbox(${idx})">View tag →</button>
+    `;
+    list.appendChild(item);
+  });
+}
+
+function renderSizeChips() {
+  const b = currentBrand();
+  const el = document.getElementById("size-chips");
+  el.innerHTML = '<span class="label">Size —</span>';
+  b.sizes.forEach(s => {
+    const c = document.createElement("span");
+    c.className = "chip" + (STATE.sizeFilter === s ? " active" : "");
+    c.textContent = s;
+    c.onclick = () => {
+      STATE.sizeFilter = STATE.sizeFilter === s ? null : s;
+      render();
+    };
+    el.appendChild(c);
+  });
+  if (STATE.sizeFilter) {
+    const c = document.createElement("span");
+    c.className = "chip clear-chip";
+    c.textContent = "× Clear";
+    c.onclick = () => { STATE.sizeFilter = null; render(); };
+    el.appendChild(c);
+  }
+}
+
+function renderMatrix() {
+  const b = currentBrand();
+  const head = document.getElementById("matrix-head");
+  const body = document.getElementById("matrix-body");
+
+  let cols = `<tr>
+    <th>Style</th>
+    <th>SKU</th>
+    <th>Color</th>
+    <th>Description</th>
+    <th class="right">Price</th>`;
+  b.sizes.forEach((s, idx) => {
+    let thCls = "size";
+    if (idx === 0) thCls += " size-first";
+    if (idx === b.sizes.length - 1) thCls += " size-last";
+    cols += `<th class="${thCls}">${s}</th>`;
+  });
+  cols += `<th class="center">Total</th><th class="center">Photos</th></tr>`;
+  head.innerHTML = cols;
+
+  const filtered = b.stockMatrix.filter(r => matchesFilter(r));
+  const colspan = b.sizes.length + 7;
+  if (filtered.length === 0) {
+    body.innerHTML = `<tr><td colspan="${colspan}"><div class="empty-state">No entries match the current filters.</div></td></tr>`;
+    return;
+  }
+
+  body.innerHTML = STATE.grouped ? renderGrouped(b, filtered, colspan) : renderFlat(b, filtered, colspan);
+}
+
+function renderFlat(b, rows, colspan) {
+  let html = "";
+  rows.forEach(row => {
+    html += renderColorRow(b, row, /*sub=*/false, colspan);
+  });
+  return html;
+}
+
+function renderGrouped(b, rows, colspan) {
+  // Group by styleCode, preserving order from `rows`
+  const groups = new Map();
+  rows.forEach(r => {
+    if (!groups.has(r.styleCode)) groups.set(r.styleCode, []);
+    groups.get(r.styleCode).push(r);
+  });
+
+  let html = "";
+  for (const [style, members] of groups) {
+    const isOpen = STATE.expandedStyle === style;
+    const totalUnits = members.reduce((a, r) => a + rowEffectiveTotal(STATE.brand, r), 0);
+    const totalPhotos = members.reduce((a, r) => a + r.photos.length, 0);
+    const groupHasEdits = members.some(r => rowHasEdits(STATE.brand, r));
+    const colors = members.map(r => r.color);
+    const colorsLabel = colors.length <= 3 ? colors.join(", ") : `${colors[0]}, ${colors[1]} +${colors.length - 2} more`;
+
+    // Aggregated sizes (using effective quantities)
+    const aggSizes = {};
+    b.sizes.forEach(s => { aggSizes[s] = 0; });
+    members.forEach(r => {
+      b.sizes.forEach(s => {
+        const orig = r.sizes[s] || 0;
+        const eff = getEffectiveQty(STATE.brand, r.styleCode, r.color, s, orig);
+        aggSizes[s] = (aggSizes[s] || 0) + eff;
+      });
+    });
+
+    // Price range
+    const prices = members.map(r => r.price).filter(p => p);
+    let priceCell = "—";
+    if (prices.length > 0) {
+      const min = Math.min(...prices), max = Math.max(...prices);
+      priceCell = min === max ? min.toFixed(0) + " €" : min.toFixed(0) + "–" + max.toFixed(0) + " €";
+    }
+
+    const sgCls = ["style-group"];
+    if (isOpen) sgCls.push("expanded");
+    if (groupHasEdits) sgCls.push("has-edits");
+    html += `<tr class="${sgCls.join(" ")}" onclick="toggleStyle('${escapeAttr(style)}')">
+      <td class="style">${escapeHtml(style)}</td>
+      <td class="sku ${members.length > 1 ? '' : 'empty'}">${members.length === 1 ? escapeHtml(members[0].skuBase || '—') : '—'}</td>
+      <td class="summary-colors">${escapeHtml(colorsLabel)}<span class="badge">${members.length} color${members.length > 1 ? "s" : ""}</span></td>
+      <td class="desc">${escapeHtml(members[0].description || "—")}</td>
+      <td class="price">${priceCell}</td>`;
+    b.sizes.forEach((s, idx) => {
+      const q = aggSizes[s] || 0;
+      let cls = "size";
+      if (idx === 0) cls += " size-first";
+      if (idx === b.sizes.length - 1) cls += " size-last";
+      if (q === 0) cls += " zero";
+      else if (q > 1) cls += " has-qty qty-multi";
+      else cls += " has-qty qty-1";
+      html += `<td class="${cls}"><span class="num">${q || "·"}</span></td>`;
+    });
+    html += `<td class="total">${totalUnits}</td>
+      <td class="action"><span class="photo-btn${isOpen ? ' expanded' : ''}" onclick="event.stopPropagation();toggleStyle('${escapeAttr(style)}')">${isOpen ? '▼ Close' : 'View ' + totalPhotos}</span></td>
+    </tr>`;
+
+    if (isOpen) {
+      members.forEach(r => {
+        html += renderColorRow(b, r, /*sub=*/true, colspan);
+      });
+    }
+  }
+  return html;
+}
+
+function renderColorRow(b, row, isSub, colspan) {
+  const rowKey = `${row.styleCode}__${row.color}`;
+  const isExpanded = STATE.expandedRow === rowKey;
+  const hasEdits = rowHasEdits(STATE.brand, row);
+  const effTotal = rowEffectiveTotal(STATE.brand, row);
+  const rowCls = ["row"];
+  if (isSub) rowCls.push("sub");
+  if (isExpanded) rowCls.push("expanded");
+  if (hasEdits) rowCls.push("has-edits");
+
+  let html = `<tr class="${rowCls.join(" ")}" onclick="toggleRow('${escapeAttr(rowKey)}')">
+    <td class="style">${isSub ? "" : escapeHtml(row.styleCode)}</td>
+    <td class="sku ${row.skuBase ? '' : 'empty'}">${escapeHtml(row.skuBase || '—')}</td>
+    <td class="color">${escapeHtml(row.color)}</td>
+    <td class="desc">${escapeHtml(row.description || "—")}</td>
+    <td class="price">${row.price ? row.price.toFixed(0) + " €" : "—"}</td>`;
+  b.sizes.forEach((s, idx) => {
+    const origQ = row.sizes[s] || 0;
+    const q = getEffectiveQty(STATE.brand, row.styleCode, row.color, s, origQ);
+    const modified = isModified(STATE.brand, row.styleCode, row.color, s);
+    let cls = "size";
+    if (idx === 0) cls += " size-first";
+    if (idx === b.sizes.length - 1) cls += " size-last";
+    if (q === 0) cls += " zero";
+    else if (q > 1) cls += " has-qty qty-multi";
+    else cls += " has-qty qty-1";
+    if (modified) cls += " modified";
+    const onclickAttr = STATE.editMode
+      ? ` onclick="event.stopPropagation();startEditCell('${escapeAttr(STATE.brand)}','${escapeAttr(row.styleCode)}','${escapeAttr(row.color)}','${escapeAttr(s)}',${origQ},this);"`
+      : "";
+    const titleAttr = modified ? ` title="Originally: ${origQ}"` : "";
+    html += `<td class="${cls}"${onclickAttr}${titleAttr}><span class="num">${q || "·"}</span></td>`;
+  });
+  html += `<td class="total">${effTotal}</td>
+    <td class="action"><button class="photo-btn${isExpanded ? " expanded" : ""}" onclick="event.stopPropagation();toggleRow('${escapeAttr(rowKey)}')">${isExpanded ? "▼ Hide" : "View " + row.photos.length}</button></td>
+  </tr>`;
+  if (isExpanded) {
+    html += `<tr class="photo-row"><td colspan="${colspan}">
+      <div class="photos-header">
+        <span><span class="label-strong">${escapeHtml(row.styleCode)}</span> · ${escapeHtml(row.color)} · ${row.photos.length} photograph${row.photos.length > 1 ? "s" : ""}</span>
+        <span>Click any tag to enlarge</span>
+      </div>
+      <div class="photos">`;
+    row.photos.forEach((p, pIdx) => {
+      const skuLine = p.sku ? `<span class="sku-line">${escapeHtml(p.sku)}</span>` : "";
+      html += `<div class="photo-card" style="--i:${pIdx}" onclick="openRowLightbox('${escapeAttr(rowKey)}', ${pIdx}); event.stopPropagation();">
+        <div class="frame"><img src="${p.path}" alt="${p.filename}" loading="lazy"></div>
+        <div class="caption">
+          <span class="size-badge">${escapeHtml(p.size || "—")}</span>
+          ${skuLine}
+          <span class="filename">${escapeHtml(p.filename)}</span>
+        </div>
+      </div>`;
+    });
+    html += `</div></td></tr>`;
+  }
+  return html;
+}
+
+function toggleStyle(style) {
+  STATE.expandedStyle = STATE.expandedStyle === style ? null : style;
+  renderMatrix();
+}
+
+function matchesFilter(row) {
+  if (STATE.sizeFilter && (!row.sizes[STATE.sizeFilter] || row.sizes[STATE.sizeFilter] === 0)) return false;
+  if (STATE.search) {
+    const q = STATE.search;
+    const hay = [row.styleCode, row.color, row.description,
+      ...row.photos.map(p => p.sku || ""),
+      ...row.photos.map(p => p.filename)].join(" ").toLowerCase();
+    if (!hay.includes(q)) return false;
+  }
+  return true;
+}
+
+function toggleRow(key) {
+  STATE.expandedRow = STATE.expandedRow === key ? null : key;
+  renderMatrix();
+}
+
+function openRowLightbox(rowKey, photoIdx) {
+  const b = currentBrand();
+  const row = b.stockMatrix.find(r => `${r.styleCode}__${r.color}` === rowKey);
+  if (!row) return;
+  STATE.lightbox.photos = row.photos.map(p => ({...p, label: `${row.styleCode} · ${row.color}`}));
+  STATE.lightbox.index = photoIdx;
+  showLightbox();
+}
+
+function openReviewLightbox(idx) {
+  const b = currentBrand();
+  const r = b.reviewNeeded[idx];
+  STATE.lightbox.photos = [{
+    path: r.path,
+    filename: r.filename,
+    size: "",
+    sku: "",
+    label: r.reason,
+  }];
+  STATE.lightbox.index = 0;
+  showLightbox();
+}
+
+function showLightbox() {
+  const lb = document.getElementById("lightbox");
+  const p = STATE.lightbox.photos[STATE.lightbox.index];
+  document.getElementById("lightbox-img").src = p.path;
+  document.getElementById("lightbox-filename").textContent = p.filename;
+  const metaParts = [];
+  if (p.size) metaParts.push(`Size — ${p.size}`);
+  if (p.sku) metaParts.push(`SKU — ${p.sku}`);
+  if (p.label) metaParts.push(p.label);
+  document.getElementById("lightbox-meta").textContent = metaParts.join("   ·   ");
+  document.getElementById("lightbox-counter").textContent =
+    `${String(STATE.lightbox.index + 1).padStart(2, "0")} / ${String(STATE.lightbox.photos.length).padStart(2, "0")}`;
+  lb.classList.add("open");
+}
+
+function navLightbox(delta) {
+  const n = STATE.lightbox.photos.length;
+  STATE.lightbox.index = (STATE.lightbox.index + delta + n) % n;
+  showLightbox();
+}
+
+function closeLightbox() {
+  document.getElementById("lightbox").classList.remove("open");
+}
+
+function clearSearch() {
+  document.getElementById("search").value = "";
+  STATE.search = "";
+  renderMatrix();
+}
+
+function scrollToReview() {
+  document.getElementById("review-section").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function escapeHtml(s) {
+  return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[c]));
+}
+function escapeAttr(s) { return escapeHtml(s).replace(/'/g, "&#39;"); }
+
+init();
+</script>
+</body>
+</html>
