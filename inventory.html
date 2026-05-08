@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<!-- firebase-config.js holds window.firebaseConfig. If missing, the site runs in localStorage-only mode. -->
+<script src="firebase-config.js" onerror="console.info('firebase-config.js not found — running in offline/local mode')"></script>
 <style>
   :root {
     --paper: #f5f1e8;
@@ -677,6 +679,183 @@
     font-size: 14px;
     color: var(--ink-soft);
     margin-top: 6px;
+  }
+
+  /* ===== Sync Status ===== */
+  .sync-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-faint);
+    padding: 6px 12px;
+    border: 1px solid var(--rule);
+    margin-left: auto;
+  }
+  .sync-status .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ink-faint);
+  }
+  .sync-status.live .dot {
+    background: #4ade80;
+    box-shadow: 0 0 6px rgba(74, 222, 128, 0.5);
+    animation: pulse 2s infinite ease-in-out;
+  }
+  .sync-status.offline .dot { background: var(--oxblood); }
+  .sync-status.error .dot { background: #f59e0b; }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  /* ===== Identity Badge ===== */
+  .identity-pill {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    padding: 6px 12px;
+    border: 1px solid var(--rule);
+    background: transparent;
+    cursor: pointer;
+    color: var(--ink-soft);
+  }
+  .identity-pill:hover { border-color: var(--ink); color: var(--ink); }
+  .identity-pill.gal { border-color: var(--oxblood); color: var(--oxblood); }
+
+  /* ===== History Section ===== */
+  .history-section {
+    margin-top: 80px;
+    border-top: 1px solid var(--ink);
+    padding-top: 32px;
+  }
+  .history-section .section-eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    color: var(--oxblood);
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+  .history-section h3 {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 40px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+  .history-section .subtitle {
+    font-family: var(--serif);
+    font-size: 19px;
+    font-style: italic;
+    color: var(--ink-soft);
+    margin-bottom: 28px;
+    line-height: 1.5;
+  }
+  .history-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px dashed var(--rule);
+  }
+  .history-toolbar .label {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--ink-faint);
+    margin-right: 12px;
+  }
+  .history-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .history-item {
+    display: grid;
+    grid-template-columns: 140px 100px 1fr 180px 120px;
+    gap: 18px;
+    align-items: baseline;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--rule-soft);
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+  .history-item .when {
+    color: var(--ink-soft);
+    letter-spacing: 0.04em;
+  }
+  .history-item .who {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 14px;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--oxblood);
+  }
+  .history-item .what {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 16px;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .history-item .what .style {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-style: normal;
+    text-transform: uppercase;
+    margin-right: 8px;
+    color: var(--ink-soft);
+  }
+  .history-item .change {
+    font-feature-settings: "tnum";
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .history-item .change .delta {
+    margin-left: 6px;
+    color: var(--oxblood);
+    font-weight: 700;
+  }
+  .history-item .change .delta.positive { color: #15803d; }
+  .history-item .brand-badge {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-faint);
+    border: 1px solid var(--rule);
+    padding: 2px 8px;
+    display: inline-block;
+    text-align: center;
+  }
+  .history-empty {
+    text-align: center;
+    padding: 60px 0;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 19px;
+    color: var(--ink-faint);
+  }
+
+  @media (max-width: 760px) {
+    .history-item {
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .history-item .what { grid-column: 1 / -1; font-size: 14px; }
+    .history-item .change { grid-column: 1 / -1; font-size: 13px; }
   }
 
   /* ===== Index Header ===== */
@@ -1409,6 +1588,10 @@
 <nav class="brand-nav">
   <div class="nav-label">House —</div>
   <div class="tabs" id="tabs"></div>
+  <div class="sync-status" id="sync-status" title="Connection state">
+    <span class="dot"></span>
+    <span id="sync-status-text">offline</span>
+  </div>
 </nav>
 
 <main>
@@ -1445,6 +1628,9 @@
       <button class="toggle-chip danger" id="reset-btn" onclick="resetUpdates()" style="display:none;">
         ✕ Reset
       </button>
+      <button class="identity-pill" id="identity-toggle" onclick="toggleIdentity()" title="Click to switch identity. Edits are tagged with your name in the history.">
+        <span id="identity-label">Editing as · Employee</span>
+      </button>
     </div>
     <div class="edits-summary" id="edits-summary">
       <strong id="edits-summary-text">0 cells modified</strong>
@@ -1469,6 +1655,21 @@
     <h3>Items pending review</h3>
     <p class="subtitle" id="review-subtitle"></p>
     <ol id="review-list" class="review-list"></ol>
+  </section>
+
+  <section id="history-section" class="history-section" style="display:none;">
+    <div class="section-eyebrow">— Ledger</div>
+    <h3>Change history</h3>
+    <p class="subtitle">Every quantity change made by anyone — newest first. Synced live from the cloud.</p>
+    <div class="history-toolbar">
+      <span class="label">Filter —</span>
+      <button class="chip active" id="history-filter-all" onclick="filterHistory('all')">All brands</button>
+      <button class="chip" onclick="filterHistory('MD75')">MD75</button>
+      <button class="chip" onclick="filterHistory('Isaac Sellam')">Isaac Sellam</button>
+      <button class="chip" onclick="filterHistory('Aito')">Aito</button>
+    </div>
+    <ol id="history-list" class="history-list"></ol>
+    <div class="history-empty" id="history-empty">No changes yet — edits will appear here as they happen.</div>
   </section>
 </main>
 
@@ -1505,6 +1706,226 @@ const STATE = {
 };
 
 const STORAGE_KEY = "inventory-updates-v1";
+const IDENTITY_KEY = "inventory-identity-v1";
+
+// ===== Firebase / Firestore =====
+let FB = null;  // { app, db, online }
+
+async function initFirebase() {
+  if (!window.firebaseConfig) {
+    console.info("[firebase] No config found — staying in localStorage-only mode");
+    setSyncStatus("local");
+    return;
+  }
+  try {
+    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js");
+    const fs = await import("https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js");
+    const app = initializeApp(window.firebaseConfig);
+    const db = fs.getFirestore(app);
+    FB = { app, db, fs };
+    setSyncStatus("connecting");
+    setupFirestoreListeners();
+    setupAuditListener();
+  } catch (e) {
+    console.error("[firebase] init failed:", e);
+    setSyncStatus("error");
+  }
+}
+
+function sanitizeForId(s) {
+  return String(s || "").replace(/[\s\/]+/g, "_");
+}
+
+function firestoreDocId(styleCode, color, size) {
+  return [sanitizeForId(styleCode), sanitizeForId(color), sanitizeForId(size)].join("__");
+}
+
+function setupFirestoreListeners() {
+  if (!FB) return;
+  const brandNames = Object.keys(DATA.brands);
+  brandNames.forEach((brand) => {
+    const itemsRef = FB.fs.collection(FB.db, "updates", brand, "items");
+    FB.fs.onSnapshot(
+      itemsRef,
+      (snapshot) => {
+        let touched = false;
+        snapshot.docChanges().forEach((change) => {
+          const data = change.doc.data();
+          if (!data || typeof data.new_qty !== "number") return;
+          // Reconstruct local STATE.updates key from document fields
+          const k = `${brand}::${data.style_code}::${data.color}::${data.size}`;
+          if (change.type === "removed") {
+            if (k in STATE.updates) { delete STATE.updates[k]; touched = true; }
+          } else {
+            if (STATE.updates[k] !== data.new_qty) { STATE.updates[k] = data.new_qty; touched = true; }
+          }
+        });
+        if (touched) {
+          saveUpdatesLocal();
+          updateEditsCounter();
+          if (STATE.brand === brand || snapshot.docChanges().some(c => true)) {
+            renderMatrix();
+            renderStats();
+          }
+        }
+        setSyncStatus("live");
+      },
+      (err) => {
+        console.error("[firestore items]", err);
+        setSyncStatus("error");
+      }
+    );
+  });
+}
+
+const HISTORY_STATE = { entries: [], filter: "all" };
+
+function setupAuditListener() {
+  if (!FB) return;
+  const auditRef = FB.fs.collection(FB.db, "audit");
+  const q = FB.fs.query(auditRef, FB.fs.orderBy("changed_at", "desc"), FB.fs.limit(200));
+  FB.fs.onSnapshot(
+    q,
+    (snapshot) => {
+      HISTORY_STATE.entries = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+      renderHistory();
+    },
+    (err) => console.error("[firestore audit]", err)
+  );
+}
+
+async function writeFirestoreUpdate(brand, styleCode, color, size, originalQty, newQty) {
+  if (!FB) return;
+  const docId = firestoreDocId(styleCode, color, size);
+  const itemRef = FB.fs.doc(FB.db, "updates", brand, "items", docId);
+  const auditRef = FB.fs.collection(FB.db, "audit");
+  const identity = getIdentity();
+  try {
+    if (newQty === originalQty) {
+      // Reset to original — delete the override
+      await FB.fs.deleteDoc(itemRef);
+    } else {
+      await FB.fs.setDoc(itemRef, {
+        style_code: styleCode,
+        color: color,
+        size: size,
+        new_qty: newQty,
+        original_qty: originalQty,
+        updated_at: FB.fs.serverTimestamp(),
+        updated_by: identity,
+      });
+    }
+    // Always log to audit
+    await FB.fs.addDoc(auditRef, {
+      brand: brand,
+      style_code: styleCode,
+      color: color,
+      size: size,
+      original_qty: originalQty,
+      new_qty: newQty,
+      delta: newQty - originalQty,
+      changed_at: FB.fs.serverTimestamp(),
+      changed_by: identity,
+    });
+  } catch (e) {
+    console.error("[firestore write]", e);
+    setSyncStatus("error");
+  }
+}
+
+async function deleteFirestoreUpdate(brand, styleCode, color, size) {
+  if (!FB) return;
+  const docId = firestoreDocId(styleCode, color, size);
+  const itemRef = FB.fs.doc(FB.db, "updates", brand, "items", docId);
+  try {
+    await FB.fs.deleteDoc(itemRef);
+  } catch (e) {
+    console.error("[firestore delete]", e);
+  }
+}
+
+function setSyncStatus(state) {
+  const el = document.getElementById("sync-status");
+  const text = document.getElementById("sync-status-text");
+  if (!el) return;
+  el.classList.remove("live", "offline", "error");
+  if (state === "live") { el.classList.add("live"); text.textContent = "live"; }
+  else if (state === "error") { el.classList.add("error"); text.textContent = "error"; }
+  else if (state === "connecting") { text.textContent = "connecting…"; }
+  else if (state === "local") { el.classList.add("offline"); text.textContent = "local only"; }
+  else { el.classList.add("offline"); text.textContent = state; }
+}
+
+// ===== Identity =====
+function getIdentity() {
+  return localStorage.getItem(IDENTITY_KEY) || "Employee";
+}
+function setIdentity(name) {
+  localStorage.setItem(IDENTITY_KEY, name);
+  updateIdentityDisplay();
+}
+function toggleIdentity() {
+  const current = getIdentity();
+  const next = current === "Gal" ? "Employee" : "Gal";
+  setIdentity(next);
+}
+function updateIdentityDisplay() {
+  const id = getIdentity();
+  const label = document.getElementById("identity-label");
+  const pill = document.getElementById("identity-toggle");
+  if (!label) return;
+  label.textContent = `Editing as · ${id}`;
+  pill.classList.toggle("gal", id === "Gal");
+}
+
+// ===== History =====
+function filterHistory(filter) {
+  HISTORY_STATE.filter = filter;
+  document.querySelectorAll(".history-toolbar .chip").forEach((c) => {
+    c.classList.toggle("active", c.textContent.trim() === (filter === "all" ? "All brands" : filter));
+  });
+  renderHistory();
+}
+
+function formatHistoryTime(ts) {
+  if (!ts) return "—";
+  const d = ts.toDate ? ts.toDate() : new Date(ts);
+  const now = new Date();
+  const sameDay = d.toDateString() === now.toDateString();
+  const opts = sameDay ? { hour: "2-digit", minute: "2-digit" } : { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" };
+  return d.toLocaleString("en-GB", opts);
+}
+
+function renderHistory() {
+  const section = document.getElementById("history-section");
+  const list = document.getElementById("history-list");
+  const empty = document.getElementById("history-empty");
+  if (!section) return;
+  section.style.display = FB ? "block" : "none";
+  if (!FB) return;
+
+  let filtered = HISTORY_STATE.entries;
+  if (HISTORY_STATE.filter !== "all") {
+    filtered = filtered.filter((e) => e.brand === HISTORY_STATE.filter);
+  }
+  if (filtered.length === 0) {
+    list.innerHTML = "";
+    empty.style.display = "block";
+    return;
+  }
+  empty.style.display = "none";
+
+  list.innerHTML = filtered.map((e) => {
+    const dCls = e.delta > 0 ? " positive" : "";
+    const dSign = e.delta > 0 ? "+" : "";
+    return `<li class="history-item">
+      <span class="when">${formatHistoryTime(e.changed_at)}</span>
+      <span class="who">${escapeHtml(e.changed_by || "Anonymous")}</span>
+      <span class="what"><span class="brand-badge">${escapeHtml(e.brand)}</span><span class="style">${escapeHtml(e.style_code)}</span>${escapeHtml(e.color)} <span style="color:var(--ink-faint)">·</span> size ${escapeHtml(e.size)}</span>
+      <span class="change">${e.original_qty} → ${e.new_qty} <span class="delta${dCls}">(${dSign}${e.delta})</span></span>
+    </li>`;
+  }).join("");
+}
 
 function loadUpdates() {
   try {
@@ -1519,7 +1940,7 @@ function loadUpdates() {
 }
 
 let _saveTimer = null;
-function saveUpdates() {
+function saveUpdatesLocal() {
   if (_saveTimer) clearTimeout(_saveTimer);
   _saveTimer = setTimeout(() => {
     try {
@@ -1529,6 +1950,8 @@ function saveUpdates() {
     }
   }, 300);
 }
+// Backwards-compat alias
+function saveUpdates() { saveUpdatesLocal(); }
 
 function updateKey(brand, styleCode, color, size) {
   return `${brand}::${styleCode}::${color}::${size}`;
@@ -1578,13 +2001,19 @@ function rowOriginalTotal(row) {
 function setQty(brand, styleCode, color, size, originalQty, newQty) {
   const n = Math.max(0, parseInt(newQty, 10) || 0);
   const k = updateKey(brand, styleCode, color, size);
+  const before = STATE.updates[k] !== undefined ? STATE.updates[k] : originalQty;
+  if (n === before) return;  // no change
   if (n === originalQty) {
     delete STATE.updates[k];
   } else {
     STATE.updates[k] = n;
   }
-  saveUpdates();
+  saveUpdatesLocal();
   updateEditsCounter();
+  // Mirror to Firestore (no-op if FB not initialized)
+  if (FB) {
+    writeFirestoreUpdate(brand, styleCode, color, size, originalQty, n);
+  }
 }
 
 function countModifications() {
@@ -1722,6 +2151,9 @@ function resetUpdates() {
 
 function init() {
   loadUpdates();
+  updateIdentityDisplay();
+  setSyncStatus("connecting");
+  initFirebase();  // async — no await needed; UI updates as listeners fire
   const brandNames = Object.keys(DATA.brands);
   const tabsEl = document.getElementById("tabs");
   brandNames.forEach((name, i) => {
